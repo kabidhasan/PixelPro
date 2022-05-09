@@ -4,18 +4,20 @@ import com.sun.glass.ui.CommonDialogs;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+
 
 import java.io.File;
 
 public class HelloController {
     @FXML
-    private Label welcomeText;
+    public ImageView imageView = new ImageView() ;
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
+
+
+
 
     @FXML
     private void clickOpenImageButton(ActionEvent e){
@@ -25,5 +27,11 @@ public class HelloController {
         );
         File selectedFile = fileChooser.showOpenDialog(null);
         System.out.println(selectedFile.getAbsolutePath() );
+
+
+
+        Image image = new Image(selectedFile.toURI().toString());
+        imageView.setImage(image);
+
     }
 }
