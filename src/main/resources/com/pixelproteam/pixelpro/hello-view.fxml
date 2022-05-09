@@ -7,6 +7,6 @@
 <AnchorPane prefHeight="626.0" prefWidth="1007.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pixelproteam.pixelpro.HelloController">
    <children>
       <Button layoutX="73.0" layoutY="55.0" mnemonicParsing="false" onAction="#clickOpenImageButton" text="Open Image" />
-      <ImageView fx:id="imageView" fitHeight="502.0" fitWidth="891.0" layoutX="73.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageView" fitHeight="650.0" fitWidth="1024.0" layoutX="73.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
