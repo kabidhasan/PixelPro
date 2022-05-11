@@ -16,7 +16,7 @@
               <MenuItem mnemonicParsing="false" onAction="#clickOpenImageButton" text="Open Image" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Filters">
+          <Menu mnemonicParsing="false" onAction="#ClickGrayscaleFilter" text="Filters">
             <items>
               <MenuItem mnemonicParsing="false" text="Grayscale" />
             </items>
