@@ -7,8 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pixelproteam.pixelpro.HelloController">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pixelproteam.pixelpro.HelloController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -31,7 +30,7 @@
       </MenuBar>
    </top>
    <center>
-      <ImageView fx:id="imageView" fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="imageView" fitHeight="600.0" fitWidth="800.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <viewport>
             <Rectangle2D height="800.0" width="1024.0" />
          </viewport>

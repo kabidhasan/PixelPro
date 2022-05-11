@@ -6,12 +6,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
 
 import java.io.File;
 
 public class HelloController {
+    @FXML
+    public BorderPane pane = new BorderPane();
     @FXML
     public ImageView imageView = new ImageView() ;
 
@@ -28,11 +31,10 @@ public class HelloController {
         File selectedFile = fileChooser.showOpenDialog(null);
         System.out.println(selectedFile.getAbsolutePath() );
 
-
-
         Image image = new Image(selectedFile.toURI().toString());
         imageView.setImage(image);
 
+        imageView.fitWidthProperty().bind(pane.widthProperty());
+        imageView.fitHeightProperty().bind(pane.heightProperty());
     }
-
 }
