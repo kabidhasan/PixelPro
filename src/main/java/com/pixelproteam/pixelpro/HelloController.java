@@ -43,20 +43,6 @@ public class HelloController {
         imageView.fitHeightProperty().bind(pane.heightProperty());
     }
 
-//    public static BufferedImage toBufferedImage(Image img) {
-//
-//
-//        // Create a buffered image with transparency
-//        BufferedImage bimage = new BufferedImage((int)img.getWidth(), (int)img.getHeight(), BufferedImage.TYPE_INT_ARGB);
-//
-//        // Draw the image on to the buffered image
-//        Graphics2D bGr = bimage.createGraphics();
-//        bGr.drawImage(img, 0, 0, null);
-//        bGr.dispose();
-//
-//        // Return the buffered image
-//        return bimage;
-//    }
 
     @FXML
     private void ClickGrayscaleFilter(ActionEvent e) {
@@ -84,6 +70,56 @@ public class HelloController {
                 // replace RGB value with avg
                 p = (a << 24) | (avg << 16) | (avg << 8)
                         | avg;
+
+                bufferedImage.setRGB(x, y, p);
+            }
+        }
+        System.out.println("Success");
+        image = SwingFXUtils.toFXImage(bufferedImage,null);
+        imageView.setImage(image);
+    }
+
+    @FXML
+    private  void clickSepiaFilter (ActionEvent e){
+        if (isImageOpened == false) {
+            return;
+        }
+        int height = (int) image.getHeight();
+        int width = (int) image.getWidth();
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int p = bufferedImage.getRGB(x, y);
+
+                int a = (p >> 24) & 0xff;
+                int R = (p >> 16) & 0xff;
+                int G = (p >> 8) & 0xff;
+                int B = p & 0xff;
+
+                int newRed = (int)(0.393 * R + 0.769 * G
+                                   + 0.189 * B);
+                int newGreen = (int)(0.349 * R + 0.686 * G
+                                     + 0.168 * B);
+                int newBlue = (int)(0.272 * R + 0.534 * G
+                                    + 0.131 * B);
+
+                if (newRed > 255)
+                    R = 255;
+                else
+                    R = newRed;
+
+                if (newGreen > 255)
+                    G = 255;
+                else
+                    G = newGreen;
+
+                if (newBlue > 255)
+                    B = 255;
+                else
+                    B = newBlue;
+
+                p = (a << 24) | (R << 16) | (G << 8) | B;
 
                 bufferedImage.setRGB(x, y, p);
             }

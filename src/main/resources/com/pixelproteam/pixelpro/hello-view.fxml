@@ -4,36 +4,42 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pixelproteam.pixelpro.HelloController">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#clickOpenImageButton" text="Open Image" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" onAction="#ClickGrayscaleFilter" text="Filters">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Grayscale" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#clickOpenImageButton" text="Open Image" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" onAction="#ClickGrayscaleFilter" text="Filters">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Grayscale" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickSepiaFilter" text="Sepia" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+         </menus>
       </MenuBar>
    </top>
    <center>
-      <ImageView fx:id="imageView" fitHeight="600.0" fitWidth="800.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <viewport>
-            <Rectangle2D height="800.0" width="1024.0" />
-         </viewport>
-      </ImageView>
+      <ScrollPane pannable="true" BorderPane.alignment="CENTER">
+         <content>
+            <ImageView fx:id="imageView" fitHeight="600.0" fitWidth="800.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <viewport>
+                  <Rectangle2D height="800.0" width="1024.0" />
+               </viewport>
+            </ImageView>
+         </content>
+      </ScrollPane>
    </center>
 </BorderPane>
