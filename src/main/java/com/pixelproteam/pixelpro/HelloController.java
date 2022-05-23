@@ -1,10 +1,13 @@
 package com.pixelproteam.pixelpro;
 
 import com.sun.glass.ui.CommonDialogs;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -14,10 +17,8 @@ import javafx.stage.FileChooser;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.image.RescaleOp;
+import java.io.*;
 
 
 import org.opencv.core.Core;
@@ -35,13 +36,36 @@ public class HelloController {
     public BorderPane pane = new BorderPane();
     @FXML
     public ImageView imageView = new ImageView();
+
+    @FXML
+    public Slider brightnessSlider;
+
+    @FXML
+    public Slider contrastSlider;
     Image image;
 
 
     boolean isImageOpened = false;
+    float brightness=0, contrast=1;
 
     File selectedFile = null;
 
+
+    public void gamma (){
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        RescaleOp op = new RescaleOp(contrast,brightness,null);
+        bufferedImage = op.filter(bufferedImage, null);
+        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+        imageView.setImage(image);
+    }
+
+    public void setGamma (){
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        RescaleOp op = new RescaleOp(contrast,brightness,null);
+        bufferedImage = op.filter(bufferedImage, null);
+        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+        imageView.setImage(image);
+    }
 
     @FXML
     public void clickOpenImageButton(ActionEvent e) {
@@ -95,7 +119,7 @@ public class HelloController {
         }
         System.out.println("Success1");
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
+        setGamma();
     }
 
     @FXML
@@ -145,7 +169,7 @@ public class HelloController {
         }
         System.out.println("Success2");
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
+        setGamma();
     }
 
     @FXML
@@ -192,115 +216,51 @@ public class HelloController {
         }
         System.out.println("Success3");
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
+        setGamma();
 
     }
 
 
-
-
-
-    public static BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
-        //Encoding the image
-        MatOfByte matOfByte = new MatOfByte();
-        Imgcodecs.imencode(".jpg", mat, matOfByte);
-        //Storing the encoded Mat in a byte array
-        byte[] byteArray = matOfByte.toArray();
-        //Preparing the Buffered Image
-        InputStream in = new ByteArrayInputStream(byteArray);
-        BufferedImage bufImage = ImageIO.read(in);
-        return bufImage;
-    }
-
-    public static WritableImage Mat2WritableImage(Mat mat) throws IOException{
-        //Encoding the image
-        MatOfByte matOfByte = new MatOfByte();
-        Imgcodecs.imencode(".jpg", mat, matOfByte);
-        //Storing the encoded Mat in a byte array
-        byte[] byteArray = matOfByte.toArray();
-        //Preparing the Buffered Image
-        InputStream in = new ByteArrayInputStream(byteArray);
-        BufferedImage bufImage = ImageIO.read(in);
-        System.out.println("Image Loaded");
-        WritableImage writableImage = SwingFXUtils.toFXImage(bufImage, null);
-        return writableImage;
-    }
-//
-//    @FXML
-//    private void clickBrightness (ActionEvent e) throws IOException {
-//        int width;
-//        int height;
-//        double alpha = 1;
-//        double beta = 50;
-//
-//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-//
-//        // Getting input image by
-//        // creating object of Mat class from local
-//        // directory
-//        Mat source = Imgcodecs.imread( selectedFile.toURI().toString());
-//
-//        Mat destination
-//                = new Mat(source.rows(), source.cols(),
-//                source.type());
-//
-//        // Applying brightness enhancement
-//        source.convertTo(destination, -1, alpha, beta);
-//
-//        BufferedImage bufferedImage = Mat2BufferedImage.Mat2BufferedImage (destination);
-//
-//        image = SwingFXUtils.toFXImage(bufferedImage,null);
+    @FXML
+    private  void clickBrightened(ActionEvent e){
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        contrast *= 1.3f;
+        brightness+= 50;
+//        RescaleOp op = new RescaleOp(contrast,brightness,null);
+//        bufferedImage = op.filter(bufferedImage, null);
+//        image = SwingFXUtils.toFXImage(bufferedImage, null);
 //        imageView.setImage(image);
-//
-//    }
+        setGamma();
+    }
 
 
-    private byte saturate(double val) {
-        int iVal = (int) Math.round(val);
-        iVal = iVal > 255 ? 255 : (iVal < 0 ? 0 : iVal);
-        return (byte) iVal;
+
+    @FXML
+    private void adjustBrightness(){
+        brightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                brightness = (float) brightnessSlider.getValue();
+                gamma();
+            }
+        });
     }
 
     @FXML
-    private void clickBrightness1(ActionEvent e) {
-        double alpha = 1.5;
-        double beta = 0;
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        Mat img = Imgcodecs.imread(selectedFile.getAbsolutePath());
-        Mat newImage = Mat.zeros(img.size(), img.type());
-        byte[] imageData = new byte[(int) (img.total() * img.channels())];
-        img.get(0, 0, imageData);
-        byte[] newImageData = new byte[(int) (newImage.total() * newImage.channels())];
-        for (int y = 0; y < img.rows(); y++) {
-            for (int x = 0; x < img.cols(); x++) {
-                for (int c = 0; c < img.channels(); c++) {
-                    double pixelValue = imageData[(y * img.cols() + x) * img.channels() + c];
-                    pixelValue = pixelValue < 0 ? pixelValue + 256 : pixelValue;
-                    newImageData[(y * img.cols() + x) * img.channels() + c]
-                            = saturate(alpha * pixelValue + beta);
-                }
+    private void adjustContrast(){
+        contrastSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                contrast = (float) contrastSlider.getValue();
+                gamma();
             }
-        }
-        System.out.println("SUCCESS4");
-
-
-        try {
-//            BufferedImage bufferedImage = Mat2BufferedImage (newImage);
-            WritableImage bufferedImage = Mat2WritableImage(newImage);
-            //BufferedImage bufImg = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight());
-            //image = SwingFXUtils.toFXImage(null,bufferedImage);
-            File file = new File ("output.jpg");
-            image = new Image(file.toURI().toString());
-            ImageIO.write(SwingFXUtils.fromFXImage(bufferedImage, null), "jpg", file );
-            imageView.setImage(image);
-
-            System.out.println("SUCCESS 5"+ file.getAbsolutePath());
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-
-
+        });
     }
+
+
+
+
+
 
 
 }
