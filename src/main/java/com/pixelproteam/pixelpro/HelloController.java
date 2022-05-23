@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
@@ -210,6 +211,20 @@ public class HelloController {
         BufferedImage bufImage = ImageIO.read(in);
         return bufImage;
     }
+
+    public static WritableImage Mat2WritableImage(Mat mat) throws IOException{
+        //Encoding the image
+        MatOfByte matOfByte = new MatOfByte();
+        Imgcodecs.imencode(".jpg", mat, matOfByte);
+        //Storing the encoded Mat in a byte array
+        byte[] byteArray = matOfByte.toArray();
+        //Preparing the Buffered Image
+        InputStream in = new ByteArrayInputStream(byteArray);
+        BufferedImage bufImage = ImageIO.read(in);
+        System.out.println("Image Loaded");
+        WritableImage writableImage = SwingFXUtils.toFXImage(bufImage, null);
+        return writableImage;
+    }
 //
 //    @FXML
 //    private void clickBrightness (ActionEvent e) throws IOException {
@@ -248,7 +263,7 @@ public class HelloController {
 
     @FXML
     private void clickBrightness1(ActionEvent e) {
-        double alpha = 1.1;
+        double alpha = 1.5;
         double beta = 0;
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat img = Imgcodecs.imread(selectedFile.getAbsolutePath());
@@ -268,15 +283,23 @@ public class HelloController {
         }
         System.out.println("SUCCESS4");
 
-        BufferedImage bufferedImage = null;
+
         try {
-            bufferedImage = Mat2BufferedImage (newImage);
+//            BufferedImage bufferedImage = Mat2BufferedImage (newImage);
+            WritableImage bufferedImage = Mat2WritableImage(newImage);
+            //BufferedImage bufImg = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight());
+            //image = SwingFXUtils.toFXImage(null,bufferedImage);
+            File file = new File ("output.jpg");
+            image = new Image(file.toURI().toString());
+            ImageIO.write(SwingFXUtils.fromFXImage(bufferedImage, null), "jpg", file );
+            imageView.setImage(image);
+
+            System.out.println("SUCCESS 5"+ file.getAbsolutePath());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
 
-        image = SwingFXUtils.toFXImage(bufferedImage,null);
-        imageView.setImage(image);
+
     }
 
 
