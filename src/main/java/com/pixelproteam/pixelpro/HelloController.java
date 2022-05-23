@@ -7,6 +7,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,6 +44,13 @@ public class HelloController {
 
     @FXML
     public Slider contrastSlider;
+
+    @FXML
+    public MenuItem saveImageButton;
+
+    @FXML
+    public MenuItem saveImageAsButton;
+
     Image image;
 
 
@@ -85,6 +93,9 @@ public class HelloController {
 
         imageView.fitWidthProperty().bind(pane.widthProperty());
         imageView.fitHeightProperty().bind(pane.heightProperty());
+
+        saveImageButton.setDisable(false);
+        saveImageAsButton.setDisable(false);
     }
 
     public String getExtension(String fileName) {
@@ -107,6 +118,41 @@ public class HelloController {
             throw new RuntimeException(ex);
         }
         System.out.println("Saved updated image to " + selectedFile);
+    }
+
+    @FXML
+    public void clickSaveImageAsButton(ActionEvent e) {
+        System.out.println("Clicked Save Image as Button");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JPEG Files (.jpg, .jpeg)",  "*.jpg", "*.jpeg"),
+                new FileChooser.ExtensionFilter("PNG File (.png)", "*.png")
+        );
+
+        File saveFile = fileChooser.showSaveDialog(null);
+
+//        if(getExtension(saveFile.getName()) == "") {
+//            String extension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0).substring(1);
+//            saveFile = new File(saveFile.getAbsolutePath() + extension);
+//        }
+
+        boolean newlyCreated;
+        try {
+             newlyCreated = saveFile.createNewFile();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(newlyCreated == true) System.out.println("Created new file " + saveFile);
+
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(imageView.getImage(), null);
+
+        try {
+            ImageIO.write(bufferedImage, getExtension(saveFile.getName()), saveFile);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        System.out.println("Saved updated image to " + saveFile);
     }
 
     @FXML
