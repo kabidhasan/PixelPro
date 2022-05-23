@@ -19,6 +19,7 @@
             <Menu mnemonicParsing="false" text="File">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#clickOpenImageButton" text="Open Image" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickSaveImageButton" text="Save Image" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Filters">

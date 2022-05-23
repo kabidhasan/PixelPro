@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.*;
+import java.util.Optional;
 
 
 import org.opencv.core.Core;
@@ -86,6 +87,27 @@ public class HelloController {
         imageView.fitHeightProperty().bind(pane.heightProperty());
     }
 
+    public String getExtension(String fileName) {
+        String extension = "";
+
+        int i = fileName.lastIndexOf('.');
+        if (i > 0) {
+            extension = fileName.substring(i+1);
+        }
+        return extension;
+    }
+
+    @FXML
+    public void clickSaveImageButton(ActionEvent e) {
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(imageView.getImage(), null);
+
+        try {
+            ImageIO.write(bufferedImage, getExtension(selectedFile.getName()), selectedFile);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        System.out.println("Saved updated image to " + selectedFile);
+    }
 
     @FXML
     private void ClickGrayscaleFilter(ActionEvent e) {
