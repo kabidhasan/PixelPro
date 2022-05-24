@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
@@ -21,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.*;
 import java.util.Optional;
+import java.util.Stack;
 
 
 import org.opencv.core.Core;
@@ -51,6 +53,14 @@ public class HelloController {
     @FXML
     public MenuItem saveImageAsButton;
 
+    @FXML
+    public Button undoButton;
+
+    @FXML
+    public Button redoButton;
+
+
+
     Image image;
 
 
@@ -58,6 +68,9 @@ public class HelloController {
     float brightness=0, contrast=1;
 
     File selectedFile = null;
+
+    Stack<Image> back = new Stack<>();
+    Stack<Image> front = new Stack<>();
 
 
     public void gamma (){
@@ -73,6 +86,26 @@ public class HelloController {
         RescaleOp op = new RescaleOp(contrast,brightness,null);
         bufferedImage = op.filter(bufferedImage, null);
         Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+        back.push(imageView.getImage());
+        undoButton.setDisable(false);
+        imageView.setImage(image);
+
+    }
+    @FXML
+    public void clickUndoButton(){
+        front.push(imageView.getImage());
+        redoButton.setDisable(false);
+        Image image = back.pop();
+        if(back.empty()) undoButton.setDisable(true);
+
+        imageView.setImage(image);
+    }
+    @FXML
+    public void clickRedoButton(){
+        back.push(imageView.getImage());
+        undoButton.setDisable(false);
+        Image image = front.pop();
+        if(front.empty())redoButton.setDisable(true);
         imageView.setImage(image);
     }
 
