@@ -96,6 +96,8 @@ public class HelloController {
 
         saveImageButton.setDisable(false);
         saveImageAsButton.setDisable(false);
+        brightnessSlider.setDisable(false);
+        contrastSlider.setDisable(false);
     }
 
     public String getExtension(String fileName) {
