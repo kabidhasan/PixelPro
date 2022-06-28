@@ -365,7 +365,7 @@ public class HelloController {
 //    EDIT
 
     @FXML
-    public void rotateHorizontal(ActionEvent e) {
+    public void mirrorHorizontal(ActionEvent e) {
         Image image = imageView.getImage();
         BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 
@@ -396,7 +396,7 @@ public class HelloController {
     }
 
     @FXML
-    public void rotateVertical(ActionEvent e) {
+    public void mirrorVertical(ActionEvent e) {
         Image image = imageView.getImage();
         BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 

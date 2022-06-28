@@ -27,8 +27,8 @@
               <items>
                   <Menu mnemonicParsing="false" text="Mirror">
                     <items>
-                      <MenuItem mnemonicParsing="false" onAction="#rotateHorizontal" text="Horiozontally" />
-                        <MenuItem mnemonicParsing="false" onAction="#rotateVertical" text="Vertically" />
+                      <MenuItem mnemonicParsing="false" onAction="#mirrorHorizontal" text="Horiozontally" />
+                        <MenuItem mnemonicParsing="false" onAction="#mirrorVertical" text="Vertically" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Rotate">
