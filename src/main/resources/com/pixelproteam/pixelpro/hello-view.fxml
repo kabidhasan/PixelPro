@@ -23,6 +23,7 @@
                   <MenuItem fx:id="saveImageAsButton" disable="true" mnemonicParsing="false" onAction="#clickSaveImageAsButton" text="Save Image As" />
                </items>
             </Menu>
+<<<<<<< HEAD
             <Menu mnemonicParsing="false" text="Edit">
               <items>
                   <Menu mnemonicParsing="false" text="Mirror">
@@ -40,6 +41,8 @@
                   </Menu>
               </items>
             </Menu>
+=======
+>>>>>>> parent of 9a1c7e8 (Merge branch 'Sajid' into Kabid)
             <Menu mnemonicParsing="false" text="Filters">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#ClickGrayscaleFilter" text="Grayscale" />

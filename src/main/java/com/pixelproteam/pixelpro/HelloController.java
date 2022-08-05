@@ -168,10 +168,10 @@ public class HelloController {
 
         File saveFile = fileChooser.showSaveDialog(null);
 
-        if(getExtension(saveFile.getName()) == "") {
-            String extension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0).substring(1);
-            saveFile = new File(saveFile.getAbsolutePath() + extension);
-        }
+//        if(getExtension(saveFile.getName()) == "") {
+//            String extension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0).substring(1);
+//            saveFile = new File(saveFile.getAbsolutePath() + extension);
+//        }
 
         boolean newlyCreated;
         try {
@@ -364,6 +364,7 @@ public class HelloController {
 
 
 
+
 //    EDIT
 
     @FXML
@@ -437,6 +438,8 @@ public class HelloController {
     public void rotate180(ActionEvent e) {
         imageView.setRotate(imageView.getRotate() + 180.0);
     }
+
+
 
     @FXML
     public void rotateCustom(ActionEvent e) {
