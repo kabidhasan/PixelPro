@@ -27,15 +27,15 @@
               <items>
                   <Menu mnemonicParsing="false" text="Mirror">
                     <items>
-                      <MenuItem mnemonicParsing="false" onAction="#rotateHorizontal" text="Horiozontally" />
-                        <MenuItem mnemonicParsing="false" onAction="#rotateVertical" text="Vertically" />
+                      <MenuItem mnemonicParsing="false" onAction="#mirrorHorizontal" text="Horiozontally" />
+                        <MenuItem mnemonicParsing="false" onAction="#mirrorVertical" text="Vertically" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Rotate">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Rotate 90" />
-                        <MenuItem mnemonicParsing="false" text="Rotate 180" />
-                        <MenuItem mnemonicParsing="false" text="Custom" />
+                        <MenuItem mnemonicParsing="false" onAction="#rotate90" text="Rotate 90" />
+                        <MenuItem mnemonicParsing="false" onAction="#rotate180" text="Rotate 180" />
+                        <MenuItem mnemonicParsing="false" onAction="#rotateCustom" text="Custom" />
                     </items>
                   </Menu>
               </items>
