@@ -6,10 +6,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -108,7 +109,6 @@ public class HelloController {
         if(front.empty())redoButton.setDisable(true);
         imageView.setImage(image);
     }
-
     @FXML
     public void clickOpenImageButton(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
@@ -120,12 +120,14 @@ public class HelloController {
         System.out.println(selectedFile.getAbsolutePath());
 
         image = new Image(selectedFile.toURI().toString());
+
         imageView.setImage(image);
 
         isImageOpened = true;
 
         imageView.fitWidthProperty().bind(pane.widthProperty());
         imageView.fitHeightProperty().bind(pane.heightProperty());
+
 
         saveImageButton.setDisable(false);
         saveImageAsButton.setDisable(false);
@@ -426,9 +428,26 @@ public class HelloController {
         imageView.setImage(image);
     }
 
+    @FXML
+    public void rotate90(ActionEvent e) {
+        imageView.setRotate(imageView.getRotate() + 90.0);
+    }
 
+    @FXML
+    public void rotate180(ActionEvent e) {
+        imageView.setRotate(imageView.getRotate() + 180.0);
+    }
 
+    @FXML
+    public void rotateCustom(ActionEvent e) {
+        TextInputDialog inputDialog = new TextInputDialog("0.00");
+        inputDialog.setContentText("Rotation Angle: ");
+        inputDialog.setTitle("Custom Rotation");
+        inputDialog.setHeaderText("Rotate by angle");
 
+        inputDialog.showAndWait();
+        double angle = Double.parseDouble(inputDialog.getResult());
 
-
+        imageView.setRotate(angle);
+    }
 }

@@ -33,9 +33,9 @@
                   </Menu>
                   <Menu mnemonicParsing="false" text="Rotate">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Rotate 90" />
-                        <MenuItem mnemonicParsing="false" text="Rotate 180" />
-                        <MenuItem mnemonicParsing="false" text="Custom" />
+                        <MenuItem mnemonicParsing="false" onAction="#rotate90" text="Rotate 90" />
+                        <MenuItem mnemonicParsing="false" onAction="#rotate180" text="Rotate 180" />
+                        <MenuItem mnemonicParsing="false" onAction="#rotateCustom" text="Custom" />
                     </items>
                   </Menu>
               </items>
