@@ -6,10 +6,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -108,7 +109,6 @@ public class HelloController {
         if(front.empty())redoButton.setDisable(true);
         imageView.setImage(image);
     }
-
     @FXML
     public void clickOpenImageButton(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
@@ -120,12 +120,14 @@ public class HelloController {
         System.out.println(selectedFile.getAbsolutePath());
 
         image = new Image(selectedFile.toURI().toString());
+
         imageView.setImage(image);
 
         isImageOpened = true;
 
         imageView.fitWidthProperty().bind(pane.widthProperty());
         imageView.fitHeightProperty().bind(pane.heightProperty());
+
 
         saveImageButton.setDisable(false);
         saveImageAsButton.setDisable(false);
@@ -166,14 +168,14 @@ public class HelloController {
 
         File saveFile = fileChooser.showSaveDialog(null);
 
-//        if(getExtension(saveFile.getName()) == "") {
-//            String extension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0).substring(1);
-//            saveFile = new File(saveFile.getAbsolutePath() + extension);
-//        }
+        if(getExtension(saveFile.getName()) == "") {
+            String extension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0).substring(1);
+            saveFile = new File(saveFile.getAbsolutePath() + extension);
+        }
 
         boolean newlyCreated;
         try {
-             newlyCreated = saveFile.createNewFile();
+            newlyCreated = saveFile.createNewFile();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -362,11 +364,10 @@ public class HelloController {
 
 
 
-
 //    EDIT
 
     @FXML
-    public void rotateHorizontal(ActionEvent e) {
+    public void mirrorHorizontal(ActionEvent e) {
         Image image = imageView.getImage();
         BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 
@@ -397,7 +398,7 @@ public class HelloController {
     }
 
     @FXML
-    public void rotateVertical(ActionEvent e) {
+    public void mirrorVertical(ActionEvent e) {
         Image image = imageView.getImage();
         BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 
@@ -427,10 +428,15 @@ public class HelloController {
         imageView.setImage(image);
     }
 
+    @FXML
+    public void rotate90(ActionEvent e) {
+        imageView.setRotate(imageView.getRotate() + 90.0);
+    }
 
-
-<<<<<<< HEAD
-
+    @FXML
+    public void rotate180(ActionEvent e) {
+        imageView.setRotate(imageView.getRotate() + 180.0);
+    }
 
     @FXML
     public void rotateCustom(ActionEvent e) {
@@ -438,9 +444,10 @@ public class HelloController {
         inputDialog.setContentText("Rotation Angle: ");
         inputDialog.setTitle("Custom Rotation");
         inputDialog.setHeaderText("Rotate by angle");
-=======
->>>>>>> parent of d003ddc (Merge pull request #2 from kabidhasan/Sajid)
 
+        inputDialog.showAndWait();
+        double angle = Double.parseDouble(inputDialog.getResult());
 
-
+        imageView.setRotate(angle);
+    }
 }
