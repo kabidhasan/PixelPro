@@ -6,10 +6,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -108,7 +109,6 @@ public class HelloController {
         if(front.empty())redoButton.setDisable(true);
         imageView.setImage(image);
     }
-
     @FXML
     public void clickOpenImageButton(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
@@ -120,12 +120,14 @@ public class HelloController {
         System.out.println(selectedFile.getAbsolutePath());
 
         image = new Image(selectedFile.toURI().toString());
+
         imageView.setImage(image);
 
         isImageOpened = true;
 
         imageView.fitWidthProperty().bind(pane.widthProperty());
         imageView.fitHeightProperty().bind(pane.heightProperty());
+
 
         saveImageButton.setDisable(false);
         saveImageAsButton.setDisable(false);
@@ -173,7 +175,7 @@ public class HelloController {
 
         boolean newlyCreated;
         try {
-             newlyCreated = saveFile.createNewFile();
+            newlyCreated = saveFile.createNewFile();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -362,8 +364,93 @@ public class HelloController {
 
 
 
+<<<<<<< HEAD
+=======
+//    EDIT
 
+    @FXML
+    public void mirrorHorizontal(ActionEvent e) {
+        Image image = imageView.getImage();
+        BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 
+        int width = simg.getWidth();
+        int height = simg.getHeight();
 
+        // BufferedImage for mirror image
+        BufferedImage mimg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
+        // Create mirror image pixel by pixel
+        for (int y = 0; y < height; y++) {
+            for (int lx = 0, rx = width - 1; lx < width; lx++, rx--) {
+
+                // lx starts from the left side of the image
+                // rx starts from the right side of the
+                // image lx is used since we are getting
+                // pixel from left side rx is used to set
+                // from right side get source pixel value
+                int p = simg.getRGB(lx, y);
+
+                // set mirror image pixel value
+                mimg.setRGB(rx, y, p);
+            }
+        }
+
+        image = SwingFXUtils.toFXImage(mimg, null);
+        imageView.setImage(image);
+    }
+
+    @FXML
+    public void mirrorVertical(ActionEvent e) {
+        Image image = imageView.getImage();
+        BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
+
+        int width = simg.getWidth();
+        int height = simg.getHeight();
+
+        // BufferedImage for mirror image
+        BufferedImage mimg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        // Create mirror image pixel by pixel
+        for (int x = 0; x < width; x++) {
+            for (int ly = 0, ry = height - 1; ly < height; ly++, ry--) {
+
+                // lx starts from the left side of the image
+                // rx starts from the right side of the
+                // image lx is used since we are getting
+                // pixel from left side rx is used to set
+                // from right side get source pixel value
+                int p = simg.getRGB(x, ly);
+
+                // set mirror image pixel value
+                mimg.setRGB(x, ry, p);
+            }
+        }
+
+        image = SwingFXUtils.toFXImage(mimg, null);
+        imageView.setImage(image);
+    }
+
+    @FXML
+    public void rotate90(ActionEvent e) {
+        imageView.setRotate(imageView.getRotate() + 90.0);
+    }
+
+    @FXML
+    public void rotate180(ActionEvent e) {
+        imageView.setRotate(imageView.getRotate() + 180.0);
+    }
+>>>>>>> SajidKabid
+
+    @FXML
+    public void rotateCustom(ActionEvent e) {
+        TextInputDialog inputDialog = new TextInputDialog("0.00");
+        inputDialog.setContentText("Rotation Angle: ");
+        inputDialog.setTitle("Custom Rotation");
+        inputDialog.setHeaderText("Rotate by angle");
+
+        inputDialog.showAndWait();
+        double angle = Double.parseDouble(inputDialog.getResult());
+
+        imageView.setRotate(angle);
+    }
 }
