@@ -67,45 +67,69 @@ public class HelloController {
 
     boolean isImageOpened = false;
     float brightness=0, contrast=1;
+    float newBrightness=0, newContrast=1;
+    float prevBrightness=0, prevContrast=1;
 
     File selectedFile = null;
 
     Stack<Image> back = new Stack<>();
     Stack<Image> front = new Stack<>();
 
+    Stack<Float> backContrast = new Stack<>();
+    Stack<Float> frontContrast = new Stack<>();
 
+    Stack<Float> backBrightness = new Stack<>();
+    Stack<Float> frontBrightness = new Stack<>();
+
+    public void StackMaintain (){
+        back.push(image);
+//        backContrast.push(prevContrast);
+//        backBrightness.push(prevBrightness);
+        undoButton.setDisable(false);
+        //imageView.setImage(image);
+    }
     public void gamma (){
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-        RescaleOp op = new RescaleOp(contrast,brightness,null);
-        bufferedImage = op.filter(bufferedImage, null);
-        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
+        System.out.println("Gamma Called");
+
     }
 
     public void setGamma (){
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         RescaleOp op = new RescaleOp(contrast,brightness,null);
         bufferedImage = op.filter(bufferedImage, null);
-        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+        image = SwingFXUtils.toFXImage(bufferedImage, null);
         back.push(imageView.getImage());
         undoButton.setDisable(false);
         imageView.setImage(image);
 
     }
+
+
     @FXML
     public void clickUndoButton(){
-        front.push(imageView.getImage());
+        front.push(image);
+//        frontContrast.push(newContrast);
+//        frontBrightness.push(newBrightness);
         redoButton.setDisable(false);
-        Image image = back.pop();
+        image = back.pop();
+//        contrast = backContrast.pop();
+//        brightness = backBrightness.pop();
+//        contrastSlider.setValue(contrast);
+//        brightnessSlider.setValue(brightness);
         if(back.empty()) undoButton.setDisable(true);
-
         imageView.setImage(image);
     }
     @FXML
     public void clickRedoButton(){
-        back.push(imageView.getImage());
+        back.push(image);
+        //backContrast.push(newContrast);
+        //backBrightness.push(newBrightness);
         undoButton.setDisable(false);
-        Image image = front.pop();
+        image = front.pop();
+//        contrast = frontContrast.pop();
+//        brightness =frontBrightness.pop();
+//        contrastSlider.setValue(contrast);
+//        brightnessSlider.setValue(brightness);
         if(front.empty())redoButton.setDisable(true);
         imageView.setImage(image);
     }
@@ -223,8 +247,10 @@ public class HelloController {
             }
         }
         System.out.println("Success1");
+        StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        setGamma();
+        imageView.setImage(image);
+
     }
 
     @FXML
@@ -273,8 +299,10 @@ public class HelloController {
             }
         }
         System.out.println("Success2");
+        StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        setGamma();
+        imageView.setImage(image);
+
     }
 
     @FXML
@@ -320,8 +348,9 @@ public class HelloController {
             }
         }
         System.out.println("Success3");
+        StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        setGamma();
+        imageView.setImage(image);
 
     }
 
@@ -335,7 +364,9 @@ public class HelloController {
 //        bufferedImage = op.filter(bufferedImage, null);
 //        image = SwingFXUtils.toFXImage(bufferedImage, null);
 //        imageView.setImage(image);
-        setGamma();
+        StackMaintain();
+        image = SwingFXUtils.toFXImage(bufferedImage, null);
+        imageView.setImage(image);
     }
 
 
@@ -345,21 +376,51 @@ public class HelloController {
         brightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                brightness = (float) brightnessSlider.getValue();
-                gamma();
+                newBrightness = (float) (brightnessSlider.getValue());
+                //gamma();
             }
         });
     }
 
     @FXML
+    private void setBrightness(){
+        brightness= (float) (newBrightness - prevBrightness);
+        System.out.println("Released " + " "+ prevBrightness+ " "+ newBrightness+ " "+ brightness);
+        prevBrightness = newBrightness;
+
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        RescaleOp op = new RescaleOp(1,brightness,null);
+        bufferedImage = op.filter(bufferedImage, null);
+        //contrastSlider.setValue(1.00);
+        image = SwingFXUtils.toFXImage(bufferedImage, null);
+        imageView.setImage(image);
+
+    }
+    @FXML
     private void adjustContrast(){
         contrastSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                contrast = (float) contrastSlider.getValue();
-                gamma();
+
+                newContrast = (float) (contrastSlider.getValue());
+                //System.out.println(newContrast);
+
             }
         });
+    }
+    float mul = 1;
+    @FXML
+    private void setContrast(){
+        contrast= (float) (newContrast/ prevContrast);
+        prevContrast = newContrast;
+        //mul*= contrast;
+        System.out.println("Released " + " "+ prevContrast+ " "+ newContrast+ " "+ contrast+ " "+ mul);
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        RescaleOp op = new RescaleOp(contrast, 0,null);
+        bufferedImage = op.filter(bufferedImage, null);
+        image = SwingFXUtils.toFXImage(bufferedImage, null);
+        imageView.setImage(image);
+
     }
 
 
@@ -368,7 +429,7 @@ public class HelloController {
 
     @FXML
     public void mirrorHorizontal(ActionEvent e) {
-        Image image = imageView.getImage();
+
         BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 
         int width = simg.getWidth();
@@ -392,14 +453,16 @@ public class HelloController {
                 mimg.setRGB(rx, y, p);
             }
         }
-
+        StackMaintain();
         image = SwingFXUtils.toFXImage(mimg, null);
         imageView.setImage(image);
+        //setGamma();
+
     }
 
     @FXML
     public void mirrorVertical(ActionEvent e) {
-        Image image = imageView.getImage();
+        
         BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 
         int width = simg.getWidth();
@@ -423,19 +486,23 @@ public class HelloController {
                 mimg.setRGB(x, ry, p);
             }
         }
-
+        StackMaintain();
         image = SwingFXUtils.toFXImage(mimg, null);
         imageView.setImage(image);
+
+        //setGamma();
     }
 
     @FXML
     public void rotate90(ActionEvent e) {
         imageView.setRotate(imageView.getRotate() + 90.0);
+
     }
 
     @FXML
     public void rotate180(ActionEvent e) {
         imageView.setRotate(imageView.getRotate() + 180.0);
+
     }
 
     @FXML
