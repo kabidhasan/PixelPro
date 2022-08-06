@@ -39,6 +39,7 @@
                                 <MenuItem mnemonicParsing="false" onAction="#rotateCustom" text="Custom" />
                             </items>
                         </Menu>
+                  <Menu mnemonicParsing="false" onAction="#blend" text="Blend" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Filters">
