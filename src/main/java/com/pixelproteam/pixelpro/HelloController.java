@@ -62,7 +62,7 @@ public class HelloController {
 
 
 
-    Image image;
+    Image image, tempImage;
 
 
     boolean isImageOpened = false;
@@ -89,6 +89,11 @@ public class HelloController {
         //imageView.setImage(image);
     }
     public void gamma (){
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        RescaleOp op = new RescaleOp(contrast,brightness,null);
+        bufferedImage = op.filter(bufferedImage, null);
+        tempImage = SwingFXUtils.toFXImage(bufferedImage, null);
+        imageView.setImage(tempImage);
         System.out.println("Gamma Called");
 
     }
@@ -117,7 +122,7 @@ public class HelloController {
 //        contrastSlider.setValue(contrast);
 //        brightnessSlider.setValue(brightness);
         if(back.empty()) undoButton.setDisable(true);
-        imageView.setImage(image);
+        gamma();
     }
     @FXML
     public void clickRedoButton(){
@@ -131,7 +136,7 @@ public class HelloController {
 //        contrastSlider.setValue(contrast);
 //        brightnessSlider.setValue(brightness);
         if(front.empty())redoButton.setDisable(true);
-        imageView.setImage(image);
+        gamma();
     }
     @FXML
     public void clickOpenImageButton(ActionEvent e) {
@@ -144,8 +149,9 @@ public class HelloController {
         System.out.println(selectedFile.getAbsolutePath());
 
         image = new Image(selectedFile.toURI().toString());
+        tempImage = image;
 
-        imageView.setImage(image);
+        imageView.setImage(tempImage);
 
         isImageOpened = true;
 
@@ -249,7 +255,7 @@ public class HelloController {
         System.out.println("Success1");
         StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
+        gamma();
 
     }
 
@@ -301,7 +307,7 @@ public class HelloController {
         System.out.println("Success2");
         StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
+        gamma();
 
     }
 
@@ -350,7 +356,7 @@ public class HelloController {
         System.out.println("Success3");
         StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
+        gamma();
 
     }
 
@@ -376,52 +382,52 @@ public class HelloController {
         brightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                newBrightness = (float) (brightnessSlider.getValue());
-                //gamma();
+                brightness = (float) (brightnessSlider.getValue());
+                gamma();
             }
         });
     }
 
-    @FXML
-    private void setBrightness(){
-        brightness= (float) (newBrightness - prevBrightness);
-        System.out.println("Released " + " "+ prevBrightness+ " "+ newBrightness+ " "+ brightness);
-        prevBrightness = newBrightness;
-
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-        RescaleOp op = new RescaleOp(1,brightness,null);
-        bufferedImage = op.filter(bufferedImage, null);
-        //contrastSlider.setValue(1.00);
-        image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
-
-    }
+    //    @FXML
+//    private void setBrightness(){
+//        brightness= (float) (newBrightness - prevBrightness);
+//        System.out.println("Released " + " "+ prevBrightness+ " "+ newBrightness+ " "+ brightness);
+//        prevBrightness = newBrightness;
+//
+//        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+//        RescaleOp op = new RescaleOp(1,brightness,null);
+//        bufferedImage = op.filter(bufferedImage, null);
+//        //contrastSlider.setValue(1.00);
+//        image = SwingFXUtils.toFXImage(bufferedImage, null);
+//        imageView.setImage(image);
+//
+//    }
     @FXML
     private void adjustContrast(){
         contrastSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
 
-                newContrast = (float) (contrastSlider.getValue());
+                contrast = (float) (contrastSlider.getValue());
                 //System.out.println(newContrast);
-
+                gamma();
             }
         });
     }
-    float mul = 1;
-    @FXML
-    private void setContrast(){
-        contrast= (float) (newContrast/ prevContrast);
-        prevContrast = newContrast;
-        //mul*= contrast;
-        System.out.println("Released " + " "+ prevContrast+ " "+ newContrast+ " "+ contrast+ " "+ mul);
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-        RescaleOp op = new RescaleOp(contrast, 0,null);
-        bufferedImage = op.filter(bufferedImage, null);
-        image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
-
-    }
+//    float mul = 1;
+//    @FXML
+//    private void setContrast(){
+//        contrast= (float) (newContrast/ prevContrast);
+//        prevContrast = newContrast;
+//        //mul*= contrast;
+//        System.out.println("Released " + " "+ prevContrast+ " "+ newContrast+ " "+ contrast+ " "+ mul);
+//        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+//        RescaleOp op = new RescaleOp(contrast, 0,null);
+//        bufferedImage = op.filter(bufferedImage, null);
+//        image = SwingFXUtils.toFXImage(bufferedImage, null);
+//        imageView.setImage(image);
+//
+//    }
 
 
 
@@ -455,8 +461,7 @@ public class HelloController {
         }
         StackMaintain();
         image = SwingFXUtils.toFXImage(mimg, null);
-        imageView.setImage(image);
-        //setGamma();
+        gamma();
 
     }
 
@@ -488,9 +493,9 @@ public class HelloController {
         }
         StackMaintain();
         image = SwingFXUtils.toFXImage(mimg, null);
-        imageView.setImage(image);
+        gamma();
 
-        //setGamma();
+
     }
 
     @FXML
@@ -561,8 +566,13 @@ public class HelloController {
         g.dispose();
         StackMaintain();
         image = SwingFXUtils.toFXImage(combined, null);
-        imageView.setImage(image);
-        
+        gamma();
+
     }
+
+//    @FXML
+//    public void draw(ActionEvent e){
+//        ;
+//    }
 
 }
