@@ -47,8 +47,6 @@ public class HelloController {
 
     @FXML
     public Slider contrastSlider;
-    @FXML
-    public Slider zoomSlider;
 
     @FXML
     public MenuItem saveImageButton;
@@ -523,11 +521,6 @@ public class HelloController {
         double angle = Double.parseDouble(inputDialog.getResult());
 
         imageView.setRotate(angle);
-    }
-
-    @FXML
-    public void handleZoom(ActionEvent e) {
-
     }
 
     public static BufferedImage scale(BufferedImage src, int w, int h)
