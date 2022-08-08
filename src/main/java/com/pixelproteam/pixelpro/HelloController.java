@@ -578,9 +578,10 @@ public class HelloController {
         });
         imageView.setOnMouseReleased(e->{
             if(isDragDone==1)
-            System.out.println("End: "+e.getX()+" "+e.getY());
+                System.out.println("End: "+e.getX()+" "+e.getY());
             isDragDone=0;
         });
+
     }
 
 
