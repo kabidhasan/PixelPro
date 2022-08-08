@@ -1,40 +1,34 @@
 package com.pixelproteam.pixelpro;
 
-import com.sun.glass.ui.CommonDialogs;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
 
 import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.*;
-import java.util.Optional;
 import java.util.Stack;
 
 
-import org.opencv.core.Core;
-import org.opencv.core.*;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgcodecs.Imgcodecs.*;
-import org.opencv.highgui.HighGui;
-
 import javax.imageio.ImageIO;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 
 public class HelloController {
     @FXML
@@ -60,7 +54,8 @@ public class HelloController {
     @FXML
     public Button redoButton;
 
-
+    @FXML
+    public Button DragTestButton;
 
     Image image, tempImage;
 
@@ -569,10 +564,21 @@ public class HelloController {
         gamma();
 
     }
+    int isDragDone=0;
+    @FXML
+    public void onClickDragTestButton(){
+        imageView.setOnDragDetected(e->{
 
-//    @FXML
-//    public void draw(ActionEvent e){
-//        ;
-//    }
+            System.out.println("Start: "+e.getX()+" "+e.getY());
+            k=1;
+        });
+        imageView.setOnMouseReleased(e->{
+            if(k==1)
+            System.out.println("End: "+e.getX()+" "+e.getY());
+            k=0;
+        });
+    }
+
+
 
 }
