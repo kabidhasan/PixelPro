@@ -564,29 +564,18 @@ public class HelloController {
         gamma();
 
     }
-
+    int isDragDone=0;
     @FXML
     public void onClickDragTestButton(){
-//        EventHandler<MouseEvent> mouseEvent= new EventHandler<MouseEvent>(){
-//
-//            @Override
-//            public void handle(MouseEvent e) {
-//                double px = e.getSceneX();
-//                double py = e.getSceneY();
-//
-//                System.out.println(px+" "+py);
-//
-//            }
-//
-//        };
-//
-//        addMouseListener((MouseListener) mouseEvent);
-//        addMouseMotionListener((MouseMotionListener) mouseEvent);
         imageView.setOnDragDetected(e->{
+
             System.out.println("Start: "+e.getX()+" "+e.getY());
+            k=1;
         });
         imageView.setOnMouseReleased(e->{
+            if(k==1)
             System.out.println("End: "+e.getX()+" "+e.getY());
+            k=0;
         });
     }
 
