@@ -29,6 +29,7 @@ import javax.imageio.ImageIO;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
+import static java.lang.Math.min;
 
 public class HelloController {
     @FXML
@@ -144,6 +145,9 @@ public class HelloController {
         System.out.println(selectedFile.getAbsolutePath());
 
         image = new Image(selectedFile.toURI().toString());
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image,null);
+        bufferedImage= scale(bufferedImage, (int) min(bufferedImage.getWidth(),imageView.getFitWidth() ), (int) min(bufferedImage.getHeight(),imageView.getFitHeight()));
+        image = SwingFXUtils.toFXImage(bufferedImage,null);
         tempImage = image;
 
         imageView.setImage(tempImage);
