@@ -59,9 +59,9 @@
         </MenuBar>
     </top>
     <center>
-        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="600.0" prefWidth="800.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="600.0" prefWidth="771.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
             <content>
-                <ImageView fx:id="imageView" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="imageView" fitHeight="589.0" fitWidth="787.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                     <viewport>
                         <Rectangle2D height="800.0" width="1024.0" />
                     </viewport>
@@ -73,14 +73,15 @@
         </ScrollPane>
     </center>
     <right>
-        <AnchorPane onMouseDragged="#adjustBrightness" prefHeight="600.0" prefWidth="403.0">
+        <AnchorPane onMouseDragged="#adjustBrightness" prefHeight="600.0" prefWidth="450.0">
             <children>
                 <Label layoutX="14.0" layoutY="14.0" text="Brightness" />
-                <Slider fx:id="brightnessSlider" disable="true" layoutX="14.0" layoutY="44.0" majorTickUnit="10.0" max="50.0" min="-50.0" onDragDetected="#adjustBrightness" onMouseReleased="#setBrightness" prefHeight="38.0" prefWidth="381.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                <Slider fx:id="brightnessSlider" disable="true" layoutX="14.0" layoutY="44.0" majorTickUnit="10.0" max="50.0" min="-50.0" onDragDetected="#adjustBrightness" prefHeight="38.0" prefWidth="381.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
                 <Label layoutX="19.0" layoutY="111.0" text="Contrast" />
-                <Slider fx:id="contrastSlider" blockIncrement="0.1" disable="true" layoutX="12.0" layoutY="140.0" majorTickUnit="0.1" max="1.5" min="0.5" minorTickCount="10" onDragDetected="#adjustContrast" onMouseReleased="#setContrast" prefHeight="14.0" prefWidth="379.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="contrastSlider" blockIncrement="0.1" disable="true" layoutX="12.0" layoutY="140.0" majorTickUnit="0.1" max="1.5" min="0.5" minorTickCount="10" onDragDetected="#adjustContrast" prefHeight="14.0" prefWidth="379.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Button fx:id="undoButton" disable="true" layoutX="43.0" layoutY="246.0" mnemonicParsing="false" onAction="#clickUndoButton" text="Undo" />
                 <Button fx:id="redoButton" disable="true" layoutX="188.0" layoutY="246.0" mnemonicParsing="false" onAction="#clickRedoButton" text="Redo" />
+            <Button fx:id="DragTestButton" layoutX="150.0" layoutY="366.0" mnemonicParsing="false" onAction="#onClickDragTestButton" text="DragTest" />
             </children>
         </AnchorPane>
     </right>
