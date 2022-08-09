@@ -4,31 +4,28 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
-
 import java.awt.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.*;
 import java.util.Stack;
-
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 import static java.lang.Math.min;
 
 public class HelloController {
@@ -76,6 +73,7 @@ public class HelloController {
 
     Stack<Float> backBrightness = new Stack<>();
     Stack<Float> frontBrightness = new Stack<>();
+
 
     public void StackMaintain (){
         back.push(image);
@@ -154,8 +152,8 @@ public class HelloController {
 
         isImageOpened = true;
 
-        imageView.fitWidthProperty().bind(pane.widthProperty());
-        imageView.fitHeightProperty().bind(pane.heightProperty());
+//        imageView.fitWidthProperty().bind(pane.widthProperty());
+//        imageView.fitHeightProperty().bind(pane.heightProperty());
 
 
         saveImageButton.setDisable(false);
@@ -571,16 +569,63 @@ public class HelloController {
     int isDragDone=0;
     @FXML
     public void onClickDragTestButton(){
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(tempImage,null);
+        Canvas canvas = new Canvas(bufferedImage.getWidth(),bufferedImage.getHeight());
+        GraphicsContext gc1 = canvas.getGraphicsContext2D();
+        gc1.drawImage(tempImage,0,0,bufferedImage.getWidth(), bufferedImage.getHeight());
+        gc1.setStroke(Color.BLACK);
+        gc1.setLineWidth(1);
+        imageView.setOnMousePressed(e->{
+            gc1.beginPath();
+            gc1.lineTo(e.getX(),e.getY());
+            gc1.stroke();
+        });
         imageView.setOnDragDetected(e->{
+            double heightOfWindow = imageView.getScene().getWindow().getHeight();
+            double widthOfWindow = imageView.getScene().getWindow().getWidth();
+            //double resizedImagesize = image.getWidth()/heightOfWindow *
+            if(e.getX()<= image.getWidth() && e.getY()<=image.getHeight()){
+                System.out.println("Start: "+e.getX()+" "+e.getY());
+                isDragDone=1;
+            }
 
-            System.out.println("Start: "+e.getX()+" "+e.getY());
-            isDragDone=1;
         });
+        imageView.setOnMouseDragged(e->{
+            double px = e.getX();
+            double py = e.getY();
+            System.out.println("Pressed: "+e.getX()+" "+e.getY());
+            gc1.lineTo(e.getX(),e.getY());
+            gc1.stroke();
+            WritableImage wim = canvas.snapshot(null, null);
+            BufferedImage bufferedImage1= SwingFXUtils.fromFXImage(wim,null);
+            tempImage= SwingFXUtils.toFXImage(bufferedImage1,null);
+            imageView.setImage(tempImage);
+
+        });
+        AtomicReference<Double> x = new AtomicReference<>((double) 0);
+        AtomicReference<Double> y = new AtomicReference<>((double) 0);
         imageView.setOnMouseReleased(e->{
-            if(isDragDone==1)
+            if(isDragDone==1){
+                if(e.getX()<= image.getWidth() && e.getY()<=image.getHeight()) {
+                    x.set(e.getX());
+                    y.set(e.getY());
+                }
+                else{
+                    x.set(image.getWidth());
+                    y.set(image.getHeight());
+                }
                 System.out.println("End: "+e.getX()+" "+e.getY());
+            }
+            System.out.println("Image Pixels: "+imageView.getImage().getWidth()+" "+imageView.getImage().getHeight());
+
+            double heightOfWindow = imageView.getScene().getWindow().getHeight();
+            double widthOfWindow = imageView.getScene().getWindow().getWidth();
+            System.out.println("Image Pixels: "+ widthOfWindow +" "+heightOfWindow);
             isDragDone=0;
+
         });
+        //double a = Scene.getHeight();
+
 
     }
 
