@@ -10,6 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Rectangle?>
 
 <BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pixelproteam.pixelpro.HelloController">
     <top>
@@ -75,11 +76,12 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid;" BorderPane.alignment="CENTER">
          <children>
-                <ImageView fx:id="imageView" fitHeight="595.0" fitWidth="744.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="imageView" fitHeight="644.0" fitWidth="755.0" nodeOrientation="INHERIT" preserveRatio="true">
                     <viewport>
                         <Rectangle2D height="800.0" width="1024.0" />
                     </viewport>
                 </ImageView>
+            <Rectangle fx:id="dragBox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" height="200.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="200.0" />
          </children>
       </AnchorPane>
    </center>
