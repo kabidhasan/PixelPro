@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -74,15 +75,19 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: Black; -fx-border-width: 0.8; -fx-border-style: solid;" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid;" BorderPane.alignment="CENTER">
-         <children>
-                <ImageView fx:id="imageView" fitHeight="644.0" fitWidth="755.0" nodeOrientation="INHERIT" preserveRatio="true">
-                    <viewport>
-                        <Rectangle2D height="800.0" width="1024.0" />
-                    </viewport>
-                </ImageView>
-            <Rectangle fx:id="dragBox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" height="200.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="200.0" />
-         </children>
-      </AnchorPane>
+      <ScrollPane prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <content>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid;">
+               <children>
+                      <ImageView fx:id="imageView" fitHeight="800.0" fitWidth="1024.0" nodeOrientation="INHERIT" preserveRatio="true">
+                          <viewport>
+                              <Rectangle2D height="800.0" width="1024.0" />
+                          </viewport>
+                      </ImageView>
+                  <Rectangle fx:id="dragBox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" height="200.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="200.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
    </center>
 </BorderPane>

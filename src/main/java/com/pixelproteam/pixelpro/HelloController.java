@@ -186,8 +186,8 @@ public class HelloController {
         isImageOpened = true;
 
 //        imageView.resize(imageWidth, imageHeight);
-        imageView.fitWidthProperty().bind(pane.widthProperty());
-        imageView.fitHeightProperty().bind(pane.heightProperty());
+        //imageView.fitWidthProperty().bind(pane.widthProperty());
+        //imageView.fitHeightProperty().bind(pane.heightProperty());
 
 
         saveImageButton.setDisable(false);
@@ -635,6 +635,7 @@ public class HelloController {
 //                    return;
 //                }
 
+
                 System.out.println("StartX: " + startX + " StartY: " + startY);
                 System.out.println("EndX: " + endX + " EndY: " + endY);
 //                System.out.print("imgStartX: " + imgStartX + " imgStartY: " + imgStartY);
@@ -652,6 +653,8 @@ public class HelloController {
                 dragBox.setHeight(endY - startY);
 
                 System.out.println("Released: " + endX + " " + endY);
+                System.out.println("ImageSize: " + imageWidth + " " + imageHeight);
+
             }
         });
 
