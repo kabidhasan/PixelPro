@@ -525,18 +525,16 @@ public class HelloController {
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         Canvas canvas = new Canvas(bufferedImage.getWidth(), bufferedImage.getHeight());
         GraphicsContext gc1 = canvas.getGraphicsContext2D();
-        gc1.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
         gc1.setStroke(colorPicker.getValue());
         gc1.setLineWidth(1);
         if (!DrawButton.isUnderline()) {
-            StackMaintain();
-            DrawButton.setUnderline(true);
-            System.out.println("Returning...");
-            System.out.println("Processing...");
 
+            DrawButton.setUnderline(true);
             imageView.setOnMousePressed(e -> {
                 if (!DrawButton.isUnderline()) return;
-
+                StackMaintain();
+                gc1.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+                gc1.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
                 gc1.setLineWidth(strokeSlider.getValue());
                 gc1.setStroke(colorPicker.getValue());
                 gc1.beginPath();
@@ -560,22 +558,24 @@ public class HelloController {
 
             });
 
-            imageView.setOnMouseReleased(e -> {
-                if (!DrawButton.isUnderline()) return;
-                if (isDragDone == 1) {
-
-
-                    gamma();
-                    gc1.restore();
-
-                }
-                isDragDone = 0;
-                //DrawButton.setUnderline(false);
-
-
-            });
+//            imageView.setOnMouseReleased(e -> {
+//                if (!DrawButton.isUnderline()) return;
+//
+//                if (isDragDone == 1) {
+//
+//
+//                    gamma();
+//                    gc1.restore();
+//
+//                }
+//                isDragDone = 0;
+//                //DrawButton.setUnderline(false);
+//
+//
+//            });
         } else {
             DrawButton.setUnderline(false);
+            gc1.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
             return;
         }
 
