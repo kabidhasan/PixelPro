@@ -61,39 +61,41 @@
         </MenuBar>
     </top>
     <right>
-        <AnchorPane onMouseDragged="#adjustBrightness" prefHeight="600.0" prefWidth="450.0" style="-fx-border-color: Black; -fx-border-width: 0.8; -fx-border-style: solid;">
+        <AnchorPane maxWidth="200.0" onMouseDragged="#adjustBrightness" prefHeight="600.0" prefWidth="189.0" style="-fx-border-color: Black; -fx-border-width: 0.8; -fx-border-style: solid;">
             <children>
-                <Label layoutX="14.0" layoutY="14.0" text="Brightness" />
-                <Slider fx:id="brightnessSlider" disable="true" layoutX="14.0" layoutY="44.0" majorTickUnit="10.0" max="50.0" min="-50.0" onDragDetected="#adjustBrightness" prefHeight="38.0" prefWidth="381.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-                <Label layoutX="19.0" layoutY="111.0" text="Contrast" />
-                <Slider fx:id="contrastSlider" blockIncrement="0.1" disable="true" layoutX="12.0" layoutY="140.0" majorTickUnit="0.1" max="1.5" min="0.5" minorTickCount="10" onDragDetected="#adjustContrast" prefHeight="14.0" prefWidth="379.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
-                <Button fx:id="undoButton" disable="true" layoutX="43.0" layoutY="246.0" mnemonicParsing="false" onAction="#clickUndoButton" text="Undo" />
-                <Button fx:id="redoButton" disable="true" layoutX="188.0" layoutY="246.0" mnemonicParsing="false" onAction="#clickRedoButton" text="Redo" />
-            <Button fx:id="cropButton" layoutX="150.0" layoutY="366.0" mnemonicParsing="false" onAction="#onCropButton" text="Crop" />
+                <Label layoutX="12.0" layoutY="14.0" prefHeight="18.0" prefWidth="67.0" text="Brightness" />
+                <Slider fx:id="brightnessSlider" disable="true" layoutX="12.0" layoutY="32.0" majorTickUnit="10.0" max="50.0" min="-50.0" onDragDetected="#adjustBrightness" prefHeight="38.0" prefWidth="181.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                <Label layoutX="12.0" layoutY="79.0" prefHeight="18.0" prefWidth="55.0" text="Contrast" />
+                <Slider fx:id="contrastSlider" blockIncrement="0.1" disable="true" layoutX="12.0" layoutY="97.0" majorTickUnit="0.1" max="1.5" min="0.5" minorTickCount="10" onDragDetected="#adjustContrast" prefHeight="38.0" prefWidth="173.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Button fx:id="undoButton" disable="true" layoutX="16.0" layoutY="204.0" mnemonicParsing="false" onAction="#clickUndoButton" prefHeight="26.0" prefWidth="60.0" text="Undo" />
+                <Button fx:id="redoButton" disable="true" layoutX="121.0" layoutY="204.0" mnemonicParsing="false" onAction="#clickRedoButton" prefHeight="26.0" prefWidth="57.0" text="Redo" />
+            <Button fx:id="cropButton" disable="true" layoutX="68.0" layoutY="245.0" mnemonicParsing="false" onAction="#onCropButton" prefHeight="26.0" prefWidth="52.0" text="Crop" />
+            <Slider fx:id="zoomSlider" disable="true" layoutX="15.0" layoutY="158.0" max="200.0" onDragDetected="#zoom" prefHeight="14.0" prefWidth="171.0" showTickLabels="true" showTickMarks="true" value="100.0" />
+            <Label layoutX="12.0" layoutY="137.0" text="Zoom" />
             </children>
         </AnchorPane>
     </right>
    <left>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: Black; -fx-border-width: 0.8; -fx-border-style: solid;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="600.0" prefWidth="159.0" style="-fx-border-color: Black; -fx-border-width: 0.8; -fx-border-style: solid;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="DrawButton" cancelButton="true" defaultButton="true" disable="true" layoutX="4.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#clickDrawButton" text="Draw" />
-            <ColorPicker fx:id="colorPicker" disable="true" editable="true" layoutX="56.0" layoutY="14.0">
+            <Button fx:id="drawButton" cancelButton="true" defaultButton="true" disable="true" layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#clickDrawButton" text="Draw" />
+            <ColorPicker fx:id="colorPicker" disable="true" editable="true" layoutX="70.0" layoutY="14.0" prefHeight="26.0" prefWidth="118.0">
                <value>
                   <Color red="1.0" />
                </value>
             </ColorPicker>
-            <Slider fx:id="strokeSlider" disable="true" layoutX="52.0" layoutY="60.0" max="10.0" min="1.0" />
-            <Label fx:id="strokeSliderLabel" layoutX="9.0" layoutY="59.0" text="Stroke" />
+            <Slider fx:id="strokeSlider" disable="true" layoutX="65.0" layoutY="59.0" max="10.0" min="1.0" prefHeight="14.0" prefWidth="127.0" />
+            <Label fx:id="strokeSliderLabel" layoutX="26.0" layoutY="58.0" text="Stroke" />
          </children></AnchorPane>
    </left>
    <center>
-      <ScrollPane prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <ScrollPane prefHeight="600.0" prefWidth="1038.0" BorderPane.alignment="CENTER">
          <content>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid;">
                <children>
-                      <ImageView fx:id="imageView" fitHeight="800.0" fitWidth="1024.0" nodeOrientation="INHERIT" preserveRatio="true">
+                      <ImageView fx:id="imageView" fitHeight="3200.0" fitWidth="4096.0" layoutY="2.0" nodeOrientation="INHERIT" preserveRatio="true">
                           <viewport>
-                              <Rectangle2D height="800.0" width="1024.0" />
+                              <Rectangle2D height="3200.0" width="4096.0" />
                           </viewport>
                       </ImageView>
                   <Rectangle fx:id="dragBox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" height="200.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="200.0" />
