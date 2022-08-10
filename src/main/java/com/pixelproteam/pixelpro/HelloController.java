@@ -90,6 +90,8 @@ public class HelloController {
     }
 
     public void gamma() {
+        front.clear();
+        redoButton.setDisable(true);
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         RescaleOp op = new RescaleOp(contrast, brightness, null);
         bufferedImage = op.filter(bufferedImage, null);
@@ -105,7 +107,11 @@ public class HelloController {
         redoButton.setDisable(false);
         image = back.pop();
         if (back.empty()) undoButton.setDisable(true);
-        gamma();
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        RescaleOp op = new RescaleOp(contrast, brightness, null);
+        bufferedImage = op.filter(bufferedImage, null);
+        tempImage = SwingFXUtils.toFXImage(bufferedImage, null);
+        imageView.setImage(tempImage);
     }
 
     @FXML
@@ -114,7 +120,11 @@ public class HelloController {
         undoButton.setDisable(false);
         image = front.pop();
         if (front.empty()) redoButton.setDisable(true);
-        gamma();
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        RescaleOp op = new RescaleOp(contrast, brightness, null);
+        bufferedImage = op.filter(bufferedImage, null);
+        tempImage = SwingFXUtils.toFXImage(bufferedImage, null);
+        imageView.setImage(tempImage);
     }
 
 
