@@ -25,6 +25,7 @@ import javafx.stage.FileChooser;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.*;
@@ -193,8 +194,6 @@ public class HelloController {
         brightnessSlider.setValue(0);
         contrastSlider.setValue(1);
         image = tempImage = null;
-
-
     }
 
     public String getExtension(String fileName) {
@@ -496,16 +495,51 @@ public class HelloController {
 
     }
 
+    private static BufferedImage rotateImageByDegrees(BufferedImage buffImage, double angle) {
+        double radian = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(radian));
+        double cos = Math.abs(Math.cos(radian));
+
+        int width = buffImage.getWidth();
+        int height = buffImage.getHeight();
+
+        int nWidth = (int) Math.floor((double) width * cos + (double) height * sin);
+        int nHeight = (int) Math.floor((double) height * cos + (double) width * sin);
+
+        BufferedImage rotatedImage = new BufferedImage(
+                nWidth, nHeight, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D graphics = rotatedImage.createGraphics();
+
+        graphics.setRenderingHint(
+                RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
+        graphics.translate((nWidth - width) / 2, (nHeight - height) / 2);
+        // rotation around the center point
+        graphics.rotate(radian, (double) (width / 2), (double) (height / 2));
+        graphics.drawImage(buffImage, 0, 0, null);
+        graphics.dispose();
+
+        return rotatedImage;
+    }
+
     @FXML
     public void rotate90(ActionEvent e) {
-        imageView.setRotate(imageView.getRotate() + 90.0);
-
+        BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
+        BufferedImage rotated = rotateImageByDegrees(simg, 90);
+        StackMaintain();
+        image = SwingFXUtils.toFXImage(rotated, null);
+        gamma();
     }
 
     @FXML
     public void rotate180(ActionEvent e) {
-        imageView.setRotate(imageView.getRotate() + 180.0);
-
+        BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
+        BufferedImage rotated = rotateImageByDegrees(simg, 180);
+        StackMaintain();
+        image = SwingFXUtils.toFXImage(rotated, null);
+        gamma();
     }
 
     @FXML
