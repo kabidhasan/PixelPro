@@ -5,8 +5,10 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
@@ -18,6 +20,9 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(root);
         stage.setTitle("PixelPro");
         stage.setScene(scene);
+        File logopath = new File("src/main/java/com/pixelproteam/pixelpro/logo.png");
+        Image logo = new Image(logopath.toURI().toString());
+        stage.getIcons().add(logo);
         //ReadOnlyDoubleProperty heit= stage.widthProperty();
         stage.show();
 

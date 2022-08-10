@@ -508,7 +508,7 @@ public class HelloController {
         overlay = scale(overlay, w, h);
         BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = combined.createGraphics();
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
         g.drawImage(base, 0, 0, null);
         g.drawImage(overlay, 0, 0, null);
         g.dispose();
