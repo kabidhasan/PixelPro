@@ -71,7 +71,6 @@ public class HelloController {
     public ColorPicker colorPicker;
 
     Image image, tempImage;
-    double imageWidth, imageHeight;
 
 
     boolean isImageOpened = false;
@@ -173,16 +172,10 @@ public class HelloController {
         bufferedImage = scale(bufferedImage, (int) min(bufferedImage.getWidth(), imageView.getFitWidth()), (int) min(bufferedImage.getHeight(), imageView.getFitHeight()));
         image = SwingFXUtils.toFXImage(bufferedImage, null);
         tempImage = image;
-        imageHeight = image.getHeight();
-        imageWidth = image.getWidth();
 
         imageView.setImage(tempImage);
 
         isImageOpened = true;
-
-        imageView.fitWidthProperty().bind(pane.widthProperty());
-        imageView.fitHeightProperty().bind(pane.heightProperty());
-
     }
 
     public void Initializer() {
@@ -620,8 +613,8 @@ public class HelloController {
 //                System.out.println("StartX: " + startX + " StartY: " + startY);
 //                System.out.println("EndX: " + endX + " EndY: " + endY);
 
-                endX = min(endX, imageWidth);
-                endY = min(endY, imageHeight);
+                endX = min(endX, image.getWidth());
+                endY = min(endY, image.getHeight());
 
                 System.out.println("EndX: " + endX + " EndY: " + endY);
 
