@@ -101,6 +101,7 @@ public class HelloController {
 
     @FXML
     public void clickUndoButton() {
+        underlineRemover();
         front.push(image);
         redoButton.setDisable(false);
         image = back.pop();
@@ -114,6 +115,7 @@ public class HelloController {
 
     @FXML
     public void clickRedoButton() {
+        underlineRemover();
         back.push(image);
         undoButton.setDisable(false);
         image = front.pop();
@@ -686,6 +688,8 @@ public class HelloController {
                 if (!drawButton.isUnderline()) return;
                 StackMaintain();
                 gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                canvas.setWidth(image.getWidth());
+                canvas.setHeight(image.getHeight());
                 gc1.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
                 gc1.setLineWidth(strokeSlider.getValue());
                 gc1.setStroke(colorPicker.getValue());
@@ -723,9 +727,10 @@ public class HelloController {
             zoomDegree=(int)zoomSlider.getValue();
             redoButton.setDisable(true);
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+            bufferedImage = scale(bufferedImage, (int)(w*zoomDegree)/100,(int)(h*zoomDegree)/100 );
+            image = SwingFXUtils.toFXImage(bufferedImage, null);
             RescaleOp op = new RescaleOp(contrast, brightness, null);
             bufferedImage = op.filter(bufferedImage, null);
-            bufferedImage = scale(bufferedImage, (int)(w*zoomDegree)/100,(int)(h*zoomDegree)/100 );
             tempImage = SwingFXUtils.toFXImage(bufferedImage, null);
             imageView.setImage(tempImage);
         });
