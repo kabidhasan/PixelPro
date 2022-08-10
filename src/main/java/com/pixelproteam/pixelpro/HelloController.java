@@ -4,27 +4,38 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 
-import javax.imageio.ImageIO;
+
 import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Stack;
 
+
+import javax.imageio.ImageIO;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 import static java.lang.Math.min;
 
 public class HelloController {
@@ -54,7 +65,8 @@ public class HelloController {
     public Button redoButton;
 
     @FXML
-    public Button DragTestButton, DrawButton;
+    public Button cropButton;
+    public Button DrawButton;
 
     @FXML
     public ColorPicker colorPicker;
@@ -84,7 +96,6 @@ public class HelloController {
         tempImage = SwingFXUtils.toFXImage(bufferedImage, null);
         imageView.setImage(tempImage);
         System.out.println("Gamma Called");
-
     }
 
 
@@ -106,6 +117,47 @@ public class HelloController {
         gamma();
     }
 
+
+    public static BufferedImage scale(BufferedImage src, int w, int h){
+        int finalw = w;
+        int finalh = h;
+        double factor = 1.0d;
+        if(src.getWidth() > src.getHeight()){
+            factor = ((double)src.getHeight()/(double)src.getWidth());
+            finalh = (int)(finalw * factor);
+        }else{
+            factor = ((double)src.getWidth()/(double)src.getHeight());
+            finalw = (int)(finalh * factor);
+        }
+
+        BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TRANSLUCENT);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(src, 0, 0, finalw, finalh, null);
+        g2.dispose();
+        return resizedImg;
+    }
+
+    public static BufferedImage scale2(BufferedImage src, int w, int h) {
+        BufferedImage img =
+                new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        int x, y;
+        int ww = src.getWidth();
+        int hh = src.getHeight();
+        int[] ys = new int[h];
+        for (y = 0; y < h; y++)
+            ys[y] = y * hh / h;
+        for (x = 0; x < w; x++) {
+            int newX = x * ww / w;
+            for (y = 0; y < h; y++) {
+                int col = src.getRGB(newX, ys[y]);
+                img.setRGB(x, y, col);
+            }
+        }
+        return img;
+    }
+
+
     @FXML
     public void clickOpenImageButton(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
@@ -125,8 +177,6 @@ public class HelloController {
         imageView.setImage(tempImage);
 
         isImageOpened = true;
-
-
     }
 
     public void Initializer() {
@@ -144,8 +194,6 @@ public class HelloController {
         brightnessSlider.setValue(0);
         contrastSlider.setValue(1);
         image = tempImage = null;
-
-
     }
 
     public String getExtension(String fileName) {
@@ -352,11 +400,12 @@ public class HelloController {
         StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
         imageView.setImage(image);
+
     }
 
 
     @FXML
-    private void adjustBrightness() {
+    private void adjustBrightness(){
         brightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
@@ -446,16 +495,51 @@ public class HelloController {
 
     }
 
+    private static BufferedImage rotateImageByDegrees(BufferedImage buffImage, double angle) {
+        double radian = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(radian));
+        double cos = Math.abs(Math.cos(radian));
+
+        int width = buffImage.getWidth();
+        int height = buffImage.getHeight();
+
+        int nWidth = (int) Math.floor((double) width * cos + (double) height * sin);
+        int nHeight = (int) Math.floor((double) height * cos + (double) width * sin);
+
+        BufferedImage rotatedImage = new BufferedImage(
+                nWidth, nHeight, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D graphics = rotatedImage.createGraphics();
+
+        graphics.setRenderingHint(
+                RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
+        graphics.translate((nWidth - width) / 2, (nHeight - height) / 2);
+        // rotation around the center point
+        graphics.rotate(radian, (double) (width / 2), (double) (height / 2));
+        graphics.drawImage(buffImage, 0, 0, null);
+        graphics.dispose();
+
+        return rotatedImage;
+    }
+
     @FXML
     public void rotate90(ActionEvent e) {
-        imageView.setRotate(imageView.getRotate() + 90.0);
-
+        BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
+        BufferedImage rotated = rotateImageByDegrees(simg, 90);
+        StackMaintain();
+        image = SwingFXUtils.toFXImage(rotated, null);
+        gamma();
     }
 
     @FXML
     public void rotate180(ActionEvent e) {
-        imageView.setRotate(imageView.getRotate() + 180.0);
-
+        BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
+        BufferedImage rotated = rotateImageByDegrees(simg, 180);
+        StackMaintain();
+        image = SwingFXUtils.toFXImage(rotated, null);
+        gamma();
     }
 
     @FXML
@@ -471,27 +555,8 @@ public class HelloController {
         imageView.setRotate(angle);
     }
 
-    public static BufferedImage scale(BufferedImage src, int w, int h) {
-        BufferedImage img =
-                new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        int x, y;
-        int ww = src.getWidth();
-        int hh = src.getHeight();
-        int[] ys = new int[h];
-        for (y = 0; y < h; y++)
-            ys[y] = y * hh / h;
-        for (x = 0; x < w; x++) {
-            int newX = x * ww / w;
-            for (y = 0; y < h; y++) {
-                int col = src.getRGB(newX, ys[y]);
-                img.setRGB(x, y, col);
-            }
-        }
-        return img;
-    }
-
     @FXML
-    public void blend() {
+    public void blend(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JPEG Files", "*.png", "*.jpg", "*.jpeg")
@@ -517,13 +582,115 @@ public class HelloController {
         gamma();
 
     }
+    boolean isDragging = false;
+    double startX, startY, endX, endY;
 
-    int isDragDone = 0;
+    @FXML
+    Rectangle dragBox = new Rectangle(0, 0, 0, 0);
+
+    @FXML
+    public void onCropButton(){
+        imageView.setOnMouseDragged(e->{
+            if(!isDragging){
+                startX = e.getX();
+                startY = e.getY();
+                isDragging = true;
+//                System.out.println("Started Dragging: " + startX + " " + startY);
+                dragBox.setVisible(true);
+                dragBox.setX(imageView.getX() + startX);
+                dragBox.setY(imageView.getY() + startY);
+
+                dragBox.setOnMouseClicked(e2->{
+                    dragBox.setVisible(false);
+                    isDragging = false;
+                    dragBox.setWidth(0);
+                    dragBox.setHeight(0);
+                });
+            }
+            else{
+                endX = e.getX();
+                endY = e.getY();
+                if (endX > startX) {
+                    dragBox.setWidth(endX - startX);
+                } else {
+                    dragBox.setWidth(startX - endX);
+                    dragBox.setX(imageView.getX() + endX);
+                }
+                if (endY > startY) {
+                    dragBox.setHeight(endY - startY);
+                } else {
+                    dragBox.setHeight(startY - endY);
+                    dragBox.setY(imageView.getY() + endY);
+                }
+            }
+        });
+
+        imageView.setOnMouseReleased(e->{
+            if(isDragging) {
+                isDragging = false;
+
+                endX = e.getX();
+                endY = e.getY();
+
+                if(startX > endX){
+                    double temp = startX;
+                    startX = endX;
+                    endX = temp;
+                }
+
+                if(startY > endY){
+                    double temp = startY;
+                    startY = endY;
+                    endY = temp;
+                }
+
+//                System.out.println("StartX: " + startX + " StartY: " + startY);
+//                System.out.println("EndX: " + endX + " EndY: " + endY);
+
+                endX = min(endX, image.getWidth());
+                endY = min(endY, image.getHeight());
+
+                System.out.println("EndX: " + endX + " EndY: " + endY);
+
+
+                dragBox.setX(startX + imageView.getX());
+                dragBox.setY(startY + imageView.getY());
+                dragBox.setWidth(endX - startX);
+                dragBox.setHeight(endY - startY);
+
+//                System.out.println("Released: " + endX + " " + endY);
+//                System.out.println("ImageSize: " + imageWidth + " " + imageHeight);
+
+
+//                TIME TO CROP THE IMAGE
+
+                PixelReader pr = image.getPixelReader();
+                WritableImage croppedImage = new WritableImage(pr, (int) startX, (int) startY, (int) (endX - startX), (int) (endY - startY));
+                StackMaintain();
+                image = croppedImage;
+                gamma();
+                dragBox.setVisible(false);
+
+//                remove all the listeners
+                imageView.setOnMouseDragged(null);
+                imageView.setOnMouseReleased(null);
+                imageView.setOnMouseClicked(null);
+            }
+        });
+
+        imageView.setOnMousePressed(e->{
+            if(dragBox.isVisible()){
+                dragBox.setVisible(false);
+                dragBox.setWidth(0);
+                dragBox.setHeight(0);
+            }
+        });
+    }
 
     @FXML
     public void clickDrawButton() {
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-        Canvas canvas = new Canvas(bufferedImage.getWidth(), bufferedImage.getHeight());
+        javafx.scene.canvas.Canvas canvas = new Canvas(bufferedImage.getWidth(), bufferedImage.getHeight());
         GraphicsContext gc1 = canvas.getGraphicsContext2D();
         gc1.setStroke(colorPicker.getValue());
         gc1.setLineWidth(1);
@@ -533,7 +700,7 @@ public class HelloController {
             imageView.setOnMousePressed(e -> {
                 if (!DrawButton.isUnderline()) return;
                 StackMaintain();
-                gc1.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+                gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 gc1.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
                 gc1.setLineWidth(strokeSlider.getValue());
                 gc1.setStroke(colorPicker.getValue());
@@ -544,7 +711,6 @@ public class HelloController {
 
             imageView.setOnMouseDragged(e -> {
                 if (!DrawButton.isUnderline()) return;
-                isDragDone = 1;
                 System.out.println("Pressed: " + e.getX() + " " + e.getY());
                 gc1.lineTo(e.getX(), e.getY());
                 gc1.stroke();
@@ -558,34 +724,11 @@ public class HelloController {
 
             });
 
-//            imageView.setOnMouseReleased(e -> {
-//                if (!DrawButton.isUnderline()) return;
-//
-//                if (isDragDone == 1) {
-//
-//
-//                    gamma();
-//                    gc1.restore();
-//
-//                }
-//                isDragDone = 0;
-//                //DrawButton.setUnderline(false);
-//
-//
-//            });
+
         } else {
             DrawButton.setUnderline(false);
-            gc1.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+            gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             return;
         }
-
     }
-
-    public void draw() {
-        //if(!DrawButton.isUnderline()) return;
-
-
-    }
-
-
 }
