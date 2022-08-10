@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
@@ -59,7 +61,7 @@ public class HelloController {
     public Button redoButton;
 
     @FXML
-    public Button DragTestButton;
+    public Button cropButton;
 
     Image image, tempImage;
     double imageWidth, imageHeight;
@@ -588,22 +590,39 @@ public class HelloController {
     Rectangle dragBox = new Rectangle(0, 0, 0, 0);
 
     @FXML
-    public void onClickDragTestButton(){
+    public void onCropButton(){
         imageView.setOnMouseDragged(e->{
             if(!isDragging){
                 startX = e.getX();
                 startY = e.getY();
                 isDragging = true;
-                System.out.println("Started Dragging: " + startX + " " + startY);
+//                System.out.println("Started Dragging: " + startX + " " + startY);
                 dragBox.setVisible(true);
                 dragBox.setX(imageView.getX() + startX);
                 dragBox.setY(imageView.getY() + startY);
+
+                dragBox.setOnMouseClicked(e2->{
+                    dragBox.setVisible(false);
+                    isDragging = false;
+                    dragBox.setWidth(0);
+                    dragBox.setHeight(0);
+                });
             }
             else{
-                dragBox.setWidth(e.getX() - startX);
-                dragBox.setHeight(e.getY() - startY);
-                System.out.println("Dragging: " + e.getX() + " " + e.getY());
-                System.out.println("Visibility: " + dragBox.isVisible());
+                endX = e.getX();
+                endY = e.getY();
+                if (endX > startX) {
+                    dragBox.setWidth(endX - startX);
+                } else {
+                    dragBox.setWidth(startX - endX);
+                    dragBox.setX(imageView.getX() + endX);
+                }
+                if (endY > startY) {
+                    dragBox.setHeight(endY - startY);
+                } else {
+                    dragBox.setHeight(startY - endY);
+                    dragBox.setY(imageView.getY() + endY);
+                }
             }
         });
 
@@ -626,20 +645,8 @@ public class HelloController {
                     endY = temp;
                 }
 
-//                double imgStartX = imageView.getX();
-//                double imgStartY = imageView.getY();
-//                double imgEndX = imgStartX + imageWidth;
-//                double imgEndY = imgStartY + imageHeight;
-//                if(startX < imgStartX || startY < imgStartY || endX > imgEndX || endY > imgEndY){
-//                    dragBox.setVisible(false);
-//                    return;
-//                }
-
-
-                System.out.println("StartX: " + startX + " StartY: " + startY);
-                System.out.println("EndX: " + endX + " EndY: " + endY);
-//                System.out.print("imgStartX: " + imgStartX + " imgStartY: " + imgStartY);
-//                System.out.println(" imgEndX: " + imgEndX + " imgEndY: " + imgEndY);
+//                System.out.println("StartX: " + startX + " StartY: " + startY);
+//                System.out.println("EndX: " + endX + " EndY: " + endY);
 
                 endX = min(endX, imageWidth);
                 endY = min(endY, imageHeight);
@@ -652,21 +659,32 @@ public class HelloController {
                 dragBox.setWidth(endX - startX);
                 dragBox.setHeight(endY - startY);
 
-                System.out.println("Released: " + endX + " " + endY);
-                System.out.println("ImageSize: " + imageWidth + " " + imageHeight);
+//                System.out.println("Released: " + endX + " " + endY);
+//                System.out.println("ImageSize: " + imageWidth + " " + imageHeight);
 
+
+//                TIME TO CROP THE IMAGE
+
+                PixelReader pr = image.getPixelReader();
+                WritableImage croppedImage = new WritableImage(pr, (int) startX, (int) startY, (int) (endX - startX), (int) (endY - startY));
+                StackMaintain();
+                image = croppedImage;
+                gamma();
+                dragBox.setVisible(false);
+
+//                remove all the listeners
+                imageView.setOnMouseDragged(null);
+                imageView.setOnMouseReleased(null);
+                imageView.setOnMouseClicked(null);
             }
         });
 
         imageView.setOnMousePressed(e->{
             if(dragBox.isVisible()){
-//                System.out.println("Clicked: " + e.getX() + " " + e.getY());
                 dragBox.setVisible(false);
                 dragBox.setWidth(0);
                 dragBox.setHeight(0);
             }
-
-            System.out.println("Pressed: " + e.getX() + " " + e.getY());
         });
     }
 
