@@ -280,6 +280,7 @@ public class HelloController {
         if (!isImageOpened) {
             return;
         }
+        underlineRemover();
         int height = (int) image.getHeight();
         int width = (int) image.getWidth();
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
@@ -317,6 +318,7 @@ public class HelloController {
         if (!isImageOpened) {
             return;
         }
+        underlineRemover();
         int height = (int) image.getHeight();
         int width = (int) image.getWidth();
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
@@ -369,6 +371,7 @@ public class HelloController {
         if (!isImageOpened) {
             return;
         }
+        underlineRemover();
         int height = (int) image.getHeight();
         int width = (int) image.getWidth();
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
@@ -416,18 +419,20 @@ public class HelloController {
 
     @FXML
     private void clickBrightened(ActionEvent e) {
+        underlineRemover();
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-        contrast *= 1.3f;
-        brightness += 50;
+        RescaleOp op =new RescaleOp(1.3f,50,null);
+        bufferedImage= op.filter(bufferedImage,null);
         StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
-        imageView.setImage(image);
+        gamma();
 
     }
 
 
     @FXML
     private void adjustBrightness(){
+        underlineRemover();
         brightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
@@ -440,6 +445,7 @@ public class HelloController {
 
     @FXML
     private void adjustContrast() {
+        underlineRemover();
         contrastSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
@@ -454,7 +460,7 @@ public class HelloController {
 
     @FXML
     public void mirrorHorizontal(ActionEvent e) {
-
+        underlineRemover();
         BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 
         int width = simg.getWidth();
@@ -486,7 +492,7 @@ public class HelloController {
 
     @FXML
     public void mirrorVertical(ActionEvent e) {
-
+        underlineRemover();
         BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
 
         int width = simg.getWidth();
@@ -544,6 +550,7 @@ public class HelloController {
 
     @FXML
     public void blend(){
+        underlineRemover();
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JPEG Files", "*.png", "*.jpg", "*.jpeg")
@@ -736,7 +743,7 @@ public class HelloController {
             gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             return;
         }
-        gamma();
+        //gamma();
     }
 
     @FXML
