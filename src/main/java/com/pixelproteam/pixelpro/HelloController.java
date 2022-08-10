@@ -1,5 +1,6 @@
 package com.pixelproteam.pixelpro;
 
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -352,10 +353,12 @@ public class HelloController {
         StackMaintain();
         image = SwingFXUtils.toFXImage(bufferedImage, null);
         imageView.setImage(image);
+
     }
 
 
     @FXML
+
     private void adjustBrightness() {
         brightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -453,6 +456,7 @@ public class HelloController {
     }
 
     @FXML
+
     public void rotate180(ActionEvent e) {
         imageView.setRotate(imageView.getRotate() + 180.0);
 
@@ -518,6 +522,7 @@ public class HelloController {
 
     }
 
+
     int isDragDone = 0;
 
     @FXML
@@ -566,4 +571,5 @@ public class HelloController {
         }
 
     }
+
 
