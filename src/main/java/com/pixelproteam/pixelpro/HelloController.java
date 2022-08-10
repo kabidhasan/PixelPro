@@ -49,19 +49,11 @@ public class HelloController {
     public Label strokeSliderLabel;
 
     @FXML
-    public MenuItem saveImageButton;
+    public MenuItem saveImageButton, saveImageAsButton, cropButton;
 
     @FXML
-    public MenuItem saveImageAsButton;
+    public Button undoButton,redoButton;
 
-    @FXML
-    public Button undoButton;
-
-    @FXML
-    public Button redoButton;
-
-    @FXML
-    public Button cropButton;
     public Button drawButton;
 
     @FXML
@@ -588,7 +580,7 @@ public class HelloController {
         }
     }
     @FXML
-    public void onCropButton(){
+    public void onCropButton(ActionEvent event){
         underlineRemover();
         imageView.setOnMouseDragged(e->{
             if(!isDragging){
