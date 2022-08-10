@@ -558,21 +558,7 @@ public class HelloController {
 
             });
 
-//            imageView.setOnMouseReleased(e -> {
-//                if (!DrawButton.isUnderline()) return;
-//
-//                if (isDragDone == 1) {
-//
-//
-//                    gamma();
-//                    gc1.restore();
-//
-//                }
-//                isDragDone = 0;
-//                //DrawButton.setUnderline(false);
-//
-//
-//            });
+
         } else {
             DrawButton.setUnderline(false);
             gc1.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
@@ -581,11 +567,3 @@ public class HelloController {
 
     }
 
-    public void draw() {
-        //if(!DrawButton.isUnderline()) return;
-
-
-    }
-
-
-}
