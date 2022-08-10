@@ -538,7 +538,7 @@ public class HelloController {
             imageView.setOnMousePressed(e -> {
                 if (!DrawButton.isUnderline()) return;
                 StackMaintain();
-                gc1.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+                gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 gc1.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
                 gc1.setLineWidth(strokeSlider.getValue());
                 gc1.setStroke(colorPicker.getValue());
@@ -566,10 +566,10 @@ public class HelloController {
 
         } else {
             DrawButton.setUnderline(false);
-            gc1.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+            gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             return;
         }
 
     }
-
+}
 
