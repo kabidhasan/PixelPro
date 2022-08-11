@@ -49,7 +49,7 @@ public class HelloController {
     public Label strokeSliderLabel;
 
     @FXML
-    public MenuItem saveImageButton, saveImageAsButton, cropButton;
+    public MenuItem saveImageButton, saveImageAsButton, cropButton, resize;
 
     @FXML
     public Button undoButton,redoButton;
@@ -751,5 +751,27 @@ public class HelloController {
 
             gamma();
         });
+    }
+
+    @FXML
+    public  void resizer(ActionEvent e){
+        TextInputDialog resw =new TextInputDialog();
+        resw.setContentText("Resize Width:");
+        resw.showAndWait();
+        int w = Integer.parseInt(resw.getResult());
+
+        TextInputDialog resh =new TextInputDialog();
+        resw.setContentText("Resize Height:");
+        resw.showAndWait();
+        int h = Integer.parseInt(resh.getResult());
+
+        
+        realWidth=w; realHeight =h;
+        StackMaintain();
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image,null);
+        bufferedImage=scale(bufferedImage,realWidth,realHeight);
+        image= SwingFXUtils.toFXImage(bufferedImage,null);
+        gamma();
+
     }
 }

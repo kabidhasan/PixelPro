@@ -28,7 +28,8 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                  <Menu fx:id="cropButton" mnemonicParsing="false" onAction="#onCropButton" text="Crop" />
+                  <MenuItem fx:id="cropButton" mnemonicParsing="false" onAction="#onCropButton" text="Crop" />
+                  <MenuItem fx:id="resize" mnemonicParsing="false" onAction="#resizer" text="Resize" />
                         <Menu mnemonicParsing="false" text="Rotate">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#rotate90" text="Rotate 90" />
@@ -42,7 +43,7 @@
                                 <MenuItem mnemonicParsing="false" onAction="#mirrorVertical" text="Vertically" />
                             </items>
                         </Menu>
-                  <Menu mnemonicParsing="false" onAction="#blend" text="Blend" />
+                  <MenuItem mnemonicParsing="false" onAction="#blend" text="Blend" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Filters">
@@ -93,7 +94,7 @@
          <content>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid;">
                <children>
-                      <ImageView fx:id="imageView" fitHeight="3200.0" fitWidth="4096.0" layoutY="2.0" nodeOrientation="INHERIT" preserveRatio="true">
+                      <ImageView fx:id="imageView" fitHeight="3199.0" fitWidth="4095.0" layoutX="1.0" layoutY="3.0" nodeOrientation="INHERIT" preserveRatio="true">
                           <viewport>
                               <Rectangle2D height="3200.0" width="4096.0" />
                           </viewport>
