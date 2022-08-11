@@ -590,30 +590,60 @@ public class HelloController {
 
     }
 
+    private static BufferedImage rotateImageByDegrees(BufferedImage buffImage, double angle) {
+        double radian = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(radian));
+        double cos = Math.abs(Math.cos(radian));
+
+        int width = buffImage.getWidth();
+        int height = buffImage.getHeight();
+
+        int nWidth = (int) Math.floor((double) width * cos + (double) height * sin);
+        int nHeight = (int) Math.floor((double) height * cos + (double) width * sin);
+
+        BufferedImage rotatedImage = new BufferedImage(
+                nWidth, nHeight, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D graphics = rotatedImage.createGraphics();
+
+        graphics.setRenderingHint(
+                RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
+        graphics.translate((nWidth - width) / 2, (nHeight - height) / 2);
+        // rotation around the center point
+        graphics.rotate(radian, (double) (width / 2), (double) (height / 2));
+        graphics.drawImage(buffImage, 0, 0, null);
+        graphics.dispose();
+        System.out.println(rotatedImage.getWidth());
+        return rotatedImage;
+
+    }
+
     @FXML
     public void rotate90(ActionEvent e) {
-        imageView.setRotate(imageView.getRotate() + 90.0);
-
+        BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
+        System.out.println(simg.getHeight());
+        BufferedImage rotated = rotateImageByDegrees(simg, 90);
+        System.out.println(rotated.getWidth());
+        StackMaintain();
+        image = SwingFXUtils.toFXImage(rotated, null);
+        int temp = realHeight;
+        realHeight = realWidth;
+        realWidth = temp;
+        gamma();
+        System.out.println(image.getWidth());
     }
 
     @FXML
     public void rotate180(ActionEvent e) {
-        imageView.setRotate(imageView.getRotate() + 180.0);
-
+        BufferedImage simg = SwingFXUtils.fromFXImage(image, null);
+        BufferedImage rotated = rotateImageByDegrees(simg, 180);
+        StackMaintain();
+        image = SwingFXUtils.toFXImage(rotated, null);
+        gamma();
     }
 
-    @FXML
-    public void rotateCustom(ActionEvent e) {
-        TextInputDialog inputDialog = new TextInputDialog("0.00");
-        inputDialog.setContentText("Rotation Angle: ");
-        inputDialog.setTitle("Custom Rotation");
-        inputDialog.setHeaderText("Rotate by angle");
-
-        inputDialog.showAndWait();
-        double angle = Double.parseDouble(inputDialog.getResult());
-
-        imageView.setRotate(angle);
-    }
 
     @FXML
     public void blend(){
@@ -807,17 +837,19 @@ public class HelloController {
 
     @FXML
     public  void resizer(ActionEvent e){
+        underlineRemover();
         TextInputDialog resw =new TextInputDialog();
+        resw.setHeaderText("Resize");
         resw.setContentText("Resize Width:");
         resw.showAndWait();
         int w = Integer.parseInt(resw.getResult());
 
         TextInputDialog resh =new TextInputDialog();
-        resw.setContentText("Resize Height:");
-        resw.showAndWait();
+        resh.setHeaderText("Resize");
+        resh.setContentText("Resize Height:");
+        resh.showAndWait();
         int h = Integer.parseInt(resh.getResult());
 
-        
         realWidth=w; realHeight =h;
         StackMaintain();
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image,null);
