@@ -755,17 +755,19 @@ public class HelloController {
 
     @FXML
     public  void resizer(ActionEvent e){
+        underlineRemover();
         TextInputDialog resw =new TextInputDialog();
+        resw.setHeaderText("Resize");
         resw.setContentText("Resize Width:");
         resw.showAndWait();
         int w = Integer.parseInt(resw.getResult());
 
         TextInputDialog resh =new TextInputDialog();
-        resw.setContentText("Resize Height:");
-        resw.showAndWait();
+        resh.setHeaderText("Resize");
+        resh.setContentText("Resize Height:");
+        resh.showAndWait();
         int h = Integer.parseInt(resh.getResult());
 
-        
         realWidth=w; realHeight =h;
         StackMaintain();
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image,null);
