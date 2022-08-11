@@ -790,9 +790,11 @@ public class HelloController {
 
     @FXML
     public void clickDrawButton() {
+
         if (!drawButton.isUnderline()) {
             underlineRemover();
             drawButton.setUnderline(true);
+
         } else {
             drawButton.setUnderline(false);
         }
@@ -804,6 +806,7 @@ public class HelloController {
                 1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f });
         BufferedImageOp op = new ConvolveOp(kernel);
         image = op.filter(image, null);
+ 
 
         return image;
     }
