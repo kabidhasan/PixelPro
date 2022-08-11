@@ -43,6 +43,7 @@
                             </items>
                         </Menu>
                         <MenuItem mnemonicParsing="false" onAction="#blend" text="Blend" />
+                  <MenuItem fx:id="addText" mnemonicParsing="false" onAction="#onAddText" text="Add Text" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Filters">
