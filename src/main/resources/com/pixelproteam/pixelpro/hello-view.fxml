@@ -85,9 +85,8 @@
                         <Color red="1.0" />
                     </value>
                 </ColorPicker>
-                <Slider fx:id="strokeSlider" disable="true" layoutX="66.0" layoutY="114.0" max="10.0" min="1.0" prefHeight="14.0" prefWidth="127.0" />
-                <Label fx:id="strokeSliderLabel" layoutX="21.0" layoutY="113.0" text="Stroke" />
-            <Button fx:id="blurButton" cancelButton="true" defaultButton="true" disable="true" layoutX="21.0" layoutY="62.0" mnemonicParsing="false" onMouseClicked="#clickBlurButton" text="Blur" />
+                <Slider fx:id="strokeSlider" disable="true" layoutX="65.0" layoutY="59.0" max="10.0" min="1.0" prefHeight="14.0" prefWidth="127.0" />
+                <Label fx:id="strokeSliderLabel" layoutX="26.0" layoutY="58.0" text="Stroke" />
             </children></AnchorPane>
     </left>
     <center>
