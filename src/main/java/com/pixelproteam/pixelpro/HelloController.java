@@ -18,6 +18,7 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 
@@ -888,6 +889,12 @@ int k=0;
                 BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
                 Graphics2D g = bufferedImage.createGraphics();
                 g.setFont(new Font("Microsoft YaHei", Font.PLAIN, size));
+                Color fx= colorPicker.getValue();
+                java.awt.Color awtColor = new java.awt.Color((float) fx.getRed(),
+                        (float) fx.getGreen(),
+                        (float) fx.getBlue(),
+                        (float) fx.getOpacity());
+                g.setColor(awtColor);
                 g.drawString(string, (int)e.getX(),(int) e.getY());
                 g.dispose();
                 image=SwingFXUtils.toFXImage(bufferedImage, null);

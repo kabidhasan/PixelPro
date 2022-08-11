@@ -79,15 +79,16 @@
     <left>
         <AnchorPane prefHeight="600.0" prefWidth="159.0" style="-fx-border-color: Black; -fx-border-width: 0.8; -fx-border-style: solid;" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="drawButton" cancelButton="true" defaultButton="true" disable="true" layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#clickDrawButton" text="Draw" />
+                <Button fx:id="drawButton" cancelButton="true" defaultButton="true" disable="true" layoutX="26.0" layoutY="108.0" mnemonicParsing="false" onMouseClicked="#clickDrawButton" text="Draw" />
                 <ColorPicker fx:id="colorPicker" disable="true" editable="true" layoutX="70.0" layoutY="14.0" prefHeight="26.0" prefWidth="118.0">
                     <value>
                         <Color red="1.0" />
                     </value>
                 </ColorPicker>
-                <Slider fx:id="strokeSlider" disable="true" layoutX="66.0" layoutY="114.0" max="10.0" min="1.0" prefHeight="14.0" prefWidth="127.0" />
-                <Label fx:id="strokeSliderLabel" layoutX="21.0" layoutY="113.0" text="Stroke" />
-            <Button fx:id="blurButton" cancelButton="true" defaultButton="true" disable="true" layoutX="21.0" layoutY="62.0" mnemonicParsing="false" onMouseClicked="#clickBlurButton" text="Blur" />
+                <Slider fx:id="strokeSlider" disable="true" layoutX="65.0" layoutY="60.0" max="10.0" min="1.0" prefHeight="14.0" prefWidth="127.0" />
+                <Label fx:id="strokeSliderLabel" layoutX="16.0" layoutY="58.0" text="Stroke" />
+            <Button fx:id="blurButton" cancelButton="true" defaultButton="true" disable="true" layoutX="111.0" layoutY="108.0" mnemonicParsing="false" onMouseClicked="#clickBlurButton" text="Blur" />
+            <Label layoutX="19.0" layoutY="19.0" text="Color" />
             </children></AnchorPane>
     </left>
     <center>
