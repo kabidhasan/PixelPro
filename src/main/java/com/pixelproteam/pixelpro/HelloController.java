@@ -37,7 +37,7 @@ import javax.imageio.ImageIO;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 import static java.lang.Math.min;
-import static marvin.MarvinPluginCollection.*;
+//import static marvin.MarvinPluginCollection.*;
 
 public class HelloController {
     @FXML
@@ -63,6 +63,9 @@ public class HelloController {
 
     @FXML
     public ColorPicker colorPicker;
+
+    @FXML
+            public MenuItem addText;
 
     Image image, tempImage,tempImage2;
     int zoomDegree = 100;
@@ -859,6 +862,41 @@ public class HelloController {
         bufferedImage=scale(bufferedImage,realWidth,realHeight);
         image= SwingFXUtils.toFXImage(bufferedImage,null);
         gamma();
+
+    }
+int k=0;
+    public void onAddText(ActionEvent ev){
+         k=1;
+        TextInputDialog txt = new TextInputDialog();
+        txt.setHeaderText("Add Text");
+        txt.setContentText("Text: ");
+        txt.showAndWait();
+        String string = txt.getResult();
+
+        int size;
+
+        TextInputDialog sz = new TextInputDialog();
+        sz.setHeaderText("Add Text");
+        sz.setContentText("Font size: ");
+        sz.showAndWait();
+        size = Integer.parseInt(sz.getResult());
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
+        g.setFont(new Font("Microsoft YaHei", Font.PLAIN, size));
+
+        imageView.setOnMouseClicked(e->{
+            if(k==0)return;
+            if(k==1){
+                g.drawString(string, (int)e.getX(),(int) e.getY());
+                StackMaintain();
+                image=SwingFXUtils.toFXImage(bufferedImage, null);
+                gamma();
+                g.dispose();
+                k=0;
+            }
+        });
+
+
 
     }
 }
