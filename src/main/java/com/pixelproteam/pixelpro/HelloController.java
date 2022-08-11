@@ -866,7 +866,7 @@ public class HelloController {
     }
 int k=0;
     public void onAddText(ActionEvent ev){
-         k=1;
+        k=1;
         TextInputDialog txt = new TextInputDialog();
         txt.setHeaderText("Add Text");
         txt.setContentText("Text: ");
@@ -880,18 +880,20 @@ int k=0;
         sz.setContentText("Font size: ");
         sz.showAndWait();
         size = Integer.parseInt(sz.getResult());
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-        Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
-        g.setFont(new Font("Microsoft YaHei", Font.PLAIN, size));
 
         imageView.setOnMouseClicked(e->{
             if(k==0)return;
             if(k==1){
-                g.drawString(string, (int)e.getX(),(int) e.getY());
                 StackMaintain();
-                image=SwingFXUtils.toFXImage(bufferedImage, null);
-                gamma();
+                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+                Graphics2D g = bufferedImage.createGraphics();
+                g.setFont(new Font("Microsoft YaHei", Font.PLAIN, size));
+                g.drawString(string, (int)e.getX(),(int) e.getY());
                 g.dispose();
+                image=SwingFXUtils.toFXImage(bufferedImage, null);
+                tempImage=SwingFXUtils.toFXImage(bufferedImage, null);
+                tempImage2=SwingFXUtils.toFXImage(bufferedImage, null);
+                gamma();
                 k=0;
             }
         });
