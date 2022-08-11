@@ -253,6 +253,7 @@ public class HelloController {
 
         imageView.setOnMouseReleased(e->{
             image = tempImage2;
+            gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             gamma();
         });
     }
