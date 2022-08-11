@@ -713,8 +713,6 @@ public class HelloController {
     public void clickDrawButton() {
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         bufferedImage= scale(bufferedImage,(int)tempImage.getWidth(), (int)tempImage.getHeight());
-        RescaleOp op = new RescaleOp(contrast,brightness,null);
-        bufferedImage=op.filter(bufferedImage,null);
         tempImage2 = SwingFXUtils.toFXImage(bufferedImage,null);
         javafx.scene.canvas.Canvas canvas = new Canvas(bufferedImage.getWidth(), bufferedImage.getHeight());
         GraphicsContext gc1 = canvas.getGraphicsContext2D();
@@ -725,7 +723,6 @@ public class HelloController {
             drawButton.setUnderline(true);
             imageView.setOnMousePressed(e -> {
                 if (!drawButton.isUnderline()) return;
-
                 StackMaintain();
                 gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 canvas.setWidth(tempImage2.getWidth());
@@ -746,9 +743,8 @@ public class HelloController {
                 WritableImage wim = canvas.snapshot(null, null);
                 BufferedImage bufferedImage1 = SwingFXUtils.fromFXImage(wim, null);
                 tempImage = SwingFXUtils.toFXImage(bufferedImage1, null);
-                image = tempImage;
-//                RescaleOp op = new RescaleOp(contrast,brightness,null);
-//                bufferedImage1=op.filter(bufferedImage1,null);
+                RescaleOp op = new RescaleOp(contrast,brightness,null);
+                bufferedImage1=op.filter(bufferedImage1,null);
                 tempImage2 = SwingFXUtils.toFXImage(bufferedImage1,null);
                 System.out.println("Image Width: "+realWidth +" Image Height "+realHeight );
                 System.out.println("Temp Width: "+ tempImage2.getWidth()+ " Image Height "+tempImage2.getHeight());
@@ -760,7 +756,7 @@ public class HelloController {
             });
 
             imageView.setOnMouseReleased(e->{
-
+                image = tempImage;
             });
 
 
