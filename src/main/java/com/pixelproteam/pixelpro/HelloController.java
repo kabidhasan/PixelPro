@@ -37,6 +37,7 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 import static java.lang.Math.min;
 
+
 public class HelloController {
     @FXML
     public BorderPane pane = new BorderPane();
@@ -58,6 +59,9 @@ public class HelloController {
 
     @FXML
     public ColorPicker colorPicker;
+
+    @FXML
+            public MenuItem addText;
 
     Image image, tempImage,tempImage2;
     int zoomDegree = 100;
@@ -182,6 +186,77 @@ public class HelloController {
         imageView.setImage(tempImage);
 
         isImageOpened = true;
+
+        tempImage2 = SwingFXUtils.toFXImage(bufferedImage,null);
+
+        javafx.scene.canvas.Canvas canvas = new Canvas(bufferedImage.getWidth(), bufferedImage.getHeight());
+        GraphicsContext gc1 = canvas.getGraphicsContext2D();
+        gc1.setStroke(colorPicker.getValue());
+        gc1.setLineWidth(1);
+
+        imageView.setOnMousePressed(e -> {
+            if (blurButton.isUnderline()) {
+                StackMaintain();
+            }
+
+            if(drawButton.isUnderline()){
+                StackMaintain();
+                gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                canvas.setWidth(tempImage2.getWidth());
+                canvas.setHeight(tempImage2.getHeight());
+                gc1.drawImage(tempImage2, 0, 0, tempImage2.getWidth(), tempImage2.getHeight());
+                gc1.setLineWidth(strokeSlider.getValue());
+                gc1.setStroke(colorPicker.getValue());
+                gc1.beginPath();
+                gc1.lineTo(e.getX(), e.getY());
+                gc1.stroke();
+            }
+        });
+
+        imageView.setOnMouseDragged(e -> {
+            if(drawButton.isUnderline()){
+                System.out.println("Pressed: " + e.getX() + " " + e.getY());
+                gc1.lineTo(e.getX(), e.getY());
+                gc1.stroke();
+                WritableImage wim = canvas.snapshot(null, null);
+                BufferedImage bufferedImage1 = SwingFXUtils.fromFXImage(wim, null);
+                bufferedImage1 = scale(bufferedImage1, (int) tempImage.getWidth(), (int) tempImage.getHeight());
+                tempImage = SwingFXUtils.toFXImage(bufferedImage1, null);
+                RescaleOp op = new RescaleOp(contrast,brightness,null);
+                bufferedImage1=op.filter(bufferedImage1,null);
+                tempImage2 = SwingFXUtils.toFXImage(bufferedImage1,null);
+                System.out.println("Image Width: "+realWidth +" Image Height "+realHeight );
+                System.out.println("Temp Width: "+ tempImage2.getWidth()+ " Image Height "+tempImage2.getHeight());
+                imageView.setImage(tempImage2);
+            }
+
+            if(blurButton.isUnderline()) {
+                double radius = strokeSlider.getValue() + 10;
+                int x1 = Math.max(0, (int) e.getX() - (int) radius);
+                int y1 = Math.max(0, (int) e.getY() - (int) radius);
+                int width = Math.min((int) tempImage2.getWidth(), (int) e.getX() + (int) radius) - x1;
+                int height = Math.min((int) tempImage2.getHeight(), (int) e.getY() + (int) radius) - y1;
+
+                //              extract subimage, blur it, and merge it back into the original image
+                BufferedImage bufferedImage1 = SwingFXUtils.fromFXImage(tempImage2, null);
+                bufferedImage1 = scale(bufferedImage1, (int) tempImage.getWidth(), (int) tempImage.getHeight());
+                BufferedImage subImage = bufferedImage1.getSubimage(x1, y1, width, height);
+                subImage = blur(subImage);
+
+                Graphics2D g2d = bufferedImage1.createGraphics();
+                g2d.drawImage(subImage, x1, y1, null);
+                g2d.dispose();
+                tempImage2 = SwingFXUtils.toFXImage(bufferedImage1, null);
+                imageView.setImage(tempImage2);
+            }
+        });
+
+        imageView.setOnMouseReleased(e->{
+            image = tempImage2;
+            gc1.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            gamma();
+        });
+
     }
 
     public void Initializer() {
@@ -808,6 +883,43 @@ public class HelloController {
         bufferedImage=scale(bufferedImage,realWidth,realHeight);
         image= SwingFXUtils.toFXImage(bufferedImage,null);
         gamma();
+
+    }
+int k=0;
+    public void onAddText(ActionEvent ev){
+        k=1;
+        TextInputDialog txt = new TextInputDialog();
+        txt.setHeaderText("Add Text");
+        txt.setContentText("Text: ");
+        txt.showAndWait();
+        String string = txt.getResult();
+
+        int size;
+
+        TextInputDialog sz = new TextInputDialog();
+        sz.setHeaderText("Add Text");
+        sz.setContentText("Font size: ");
+        sz.showAndWait();
+        size = Integer.parseInt(sz.getResult());
+
+        imageView.setOnMouseClicked(e->{
+            if(k==0)return;
+            if(k==1){
+                StackMaintain();
+                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+                Graphics2D g = bufferedImage.createGraphics();
+                g.setFont(new Font("Microsoft YaHei", Font.PLAIN, size));
+                g.drawString(string, (int)e.getX(),(int) e.getY());
+                g.dispose();
+                image=SwingFXUtils.toFXImage(bufferedImage, null);
+                tempImage=SwingFXUtils.toFXImage(bufferedImage, null);
+                tempImage2=SwingFXUtils.toFXImage(bufferedImage, null);
+                gamma();
+                k=0;
+            }
+        });
+
+
 
     }
 }
