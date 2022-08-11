@@ -187,7 +187,6 @@ public class HelloController {
         imageView.setImage(tempImage);
 
         isImageOpened = true;
-
         tempImage2 = SwingFXUtils.toFXImage(bufferedImage,null);
 
         javafx.scene.canvas.Canvas canvas = new Canvas(bufferedImage.getWidth(), bufferedImage.getHeight());
@@ -198,8 +197,6 @@ public class HelloController {
         imageView.setOnMousePressed(e -> {
             if (blurButton.isUnderline()) {
                 StackMaintain();
-                //                bufferedImage = scale(bufferedImage,(int)tempImage.getWidth(), (int)tempImage.getHeight());
-                tempImage2 = SwingFXUtils.toFXImage(SwingFXUtils.fromFXImage(image, null),null);
             }
 
             if(drawButton.isUnderline()){
@@ -223,6 +220,7 @@ public class HelloController {
                 gc1.stroke();
                 WritableImage wim = canvas.snapshot(null, null);
                 BufferedImage bufferedImage1 = SwingFXUtils.fromFXImage(wim, null);
+                bufferedImage1 = scale(bufferedImage1, (int) tempImage.getWidth(), (int) tempImage.getHeight());
                 tempImage = SwingFXUtils.toFXImage(bufferedImage1, null);
                 RescaleOp op = new RescaleOp(contrast,brightness,null);
                 bufferedImage1=op.filter(bufferedImage1,null);
@@ -241,6 +239,7 @@ public class HelloController {
 
                 //              extract subimage, blur it, and merge it back into the original image
                 BufferedImage bufferedImage1 = SwingFXUtils.fromFXImage(tempImage2, null);
+                bufferedImage1 = scale(bufferedImage1, (int) tempImage.getWidth(), (int) tempImage.getHeight());
                 BufferedImage subImage = bufferedImage1.getSubimage(x1, y1, width, height);
                 subImage = blur(subImage);
 
