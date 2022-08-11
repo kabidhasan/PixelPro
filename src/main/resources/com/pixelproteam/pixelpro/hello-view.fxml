@@ -28,12 +28,8 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                        <Menu mnemonicParsing="false" text="Mirror">
-                            <items>
-                                <MenuItem mnemonicParsing="false" onAction="#mirrorHorizontal" text="Horiozontally" />
-                                <MenuItem mnemonicParsing="false" onAction="#mirrorVertical" text="Vertically" />
-                            </items>
-                        </Menu>
+                  <MenuItem fx:id="cropButton" mnemonicParsing="false" onAction="#onCropButton" text="Crop" />
+                  <MenuItem fx:id="resize" mnemonicParsing="false" onAction="#resizer" text="Resize" />
                         <Menu mnemonicParsing="false" text="Rotate">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#rotate90" text="Rotate 90" />
@@ -41,7 +37,13 @@
                                 <MenuItem mnemonicParsing="false" onAction="#rotateCustom" text="Custom" />
                             </items>
                         </Menu>
-                  <Menu mnemonicParsing="false" onAction="#blend" text="Blend" />
+                        <Menu mnemonicParsing="false" text="Mirror">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#mirrorHorizontal" text="Horiozontally" />
+                                <MenuItem mnemonicParsing="false" onAction="#mirrorVertical" text="Vertically" />
+                            </items>
+                        </Menu>
+                  <MenuItem mnemonicParsing="false" onAction="#blend" text="Blend" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Filters">
@@ -69,7 +71,6 @@
                 <Slider fx:id="contrastSlider" blockIncrement="0.1" disable="true" layoutX="12.0" layoutY="97.0" majorTickUnit="0.1" max="1.5" min="0.5" minorTickCount="10" onDragDetected="#adjustContrast" prefHeight="38.0" prefWidth="173.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Button fx:id="undoButton" disable="true" layoutX="16.0" layoutY="204.0" mnemonicParsing="false" onAction="#clickUndoButton" prefHeight="26.0" prefWidth="60.0" text="Undo" />
                 <Button fx:id="redoButton" disable="true" layoutX="121.0" layoutY="204.0" mnemonicParsing="false" onAction="#clickRedoButton" prefHeight="26.0" prefWidth="57.0" text="Redo" />
-            <Button fx:id="cropButton" disable="true" layoutX="68.0" layoutY="245.0" mnemonicParsing="false" onAction="#onCropButton" prefHeight="26.0" prefWidth="52.0" text="Crop" />
             <Slider fx:id="zoomSlider" disable="true" layoutX="15.0" layoutY="158.0" max="200.0" onDragDetected="#zoom" prefHeight="14.0" prefWidth="171.0" showTickLabels="true" showTickMarks="true" value="100.0" />
             <Label layoutX="12.0" layoutY="137.0" text="Zoom" />
             </children>
@@ -93,7 +94,7 @@
          <content>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid;">
                <children>
-                      <ImageView fx:id="imageView" fitHeight="3200.0" fitWidth="4096.0" layoutY="2.0" nodeOrientation="INHERIT" preserveRatio="true">
+                      <ImageView fx:id="imageView" fitHeight="3199.0" fitWidth="4095.0" layoutX="1.0" layoutY="3.0" nodeOrientation="INHERIT" preserveRatio="true">
                           <viewport>
                               <Rectangle2D height="3200.0" width="4096.0" />
                           </viewport>
