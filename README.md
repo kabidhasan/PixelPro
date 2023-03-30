@@ -51,11 +51,11 @@ Conversion notes:
 
 **Idea:**
 
-The fundamental idea is to implement an image editor application completely written in Java from scratch. We aim to implement some basic features that are offered by the conventional imag
+The fundamental idea is to implement an image editor application completely written in Java from scratch. We aim to implement some basic features that are offered by the conventional image-editing applications (e.g., Picsart, Adobe Photoshop). The features would allow the user to adjust different properties of the image, correct the image manually with certain tools, and add a variety of special effects to the subject image.
 
 https://user-images.githubusercontent.com/59143651/228870675-3f149603-c955-4313-a978-e426c865431d.mp4
 
-e-editing applications (e.g., Picsart, Adobe Photoshop). The features would allow the user to adjust different properties of the image, correct the image manually with certain tools, and add a variety of special effects to the subject image.
+
 
 **Motivation:**
 
